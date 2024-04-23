@@ -1,6 +1,8 @@
 package com.mawuli.sns.security.controllers;
 
-import com.mawuli.sns.security.domain.dto.RegistrationRequest;
+import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
+import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
+import com.mawuli.sns.security.domain.dto.request.RegistrationRequest;
 import com.mawuli.sns.security.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;

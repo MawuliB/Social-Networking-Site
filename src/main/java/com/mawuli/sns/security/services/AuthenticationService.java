@@ -1,13 +1,14 @@
 package com.mawuli.sns.security.services;
 
-import com.mawuli.sns.security.controllers.AuthenticationRequest;
-import com.mawuli.sns.security.controllers.AuthenticationResponse;
-import com.mawuli.sns.security.domain.dto.RegistrationRequest;
+import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
+import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
+import com.mawuli.sns.security.domain.dto.request.RegistrationRequest;
 import com.mawuli.sns.security.domain.user.Token;
 import com.mawuli.sns.security.domain.user.User;
 import com.mawuli.sns.security.repositories.RoleRepository;
 import com.mawuli.sns.security.repositories.TokenRepository;
 import com.mawuli.sns.security.repositories.UserRepository;
+import com.mawuli.sns.utility.password.ValidatePassword;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    private final ValidatePassword validatePassword;
+
     @Value("${application.mailing.frontend.activation-url}")
     private String activationUrl;
 
@@ -54,6 +57,13 @@ public class AuthenticationService {
             throw new ResponseStatusException(
                     BAD_REQUEST,
                     "Username already exists"
+            );
+        }
+        //check for a valid password
+        if(!validatePassword.isValidPassword(request.getPassword())) {
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Password must be at least 8 characters and contain at least one number, one uppercase letter, one lowercase letter and one special character"
             );
         }
         

@@ -1,4 +1,4 @@
-package com.mawuli.sns.security.controllers;
+package com.mawuli.sns.security.domain.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
