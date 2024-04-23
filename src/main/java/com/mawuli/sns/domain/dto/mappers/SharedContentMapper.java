@@ -1,4 +1,4 @@
-package com.mawuli.sns.utility.mappers;
+package com.mawuli.sns.domain.dto.mappers;
 
 import com.mawuli.sns.domain.dto.request.SharedContentDto;
 import com.mawuli.sns.domain.entities.SharedContent;

@@ -1,5 +1,6 @@
 package com.mawuli.sns.services;
 
+import com.mawuli.sns.repositories.ContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,5 +8,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ContentService {
 
-    private final ContentService contentService;
+    private final ContentRepository contentRepository;
 }
