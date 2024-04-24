@@ -1,0 +1,68 @@
+<!--Generate Activation Account Email Template-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Account Activation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.8em;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logo img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+        }
+
+        .content a {
+            color: #007bff;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <img src="https://cdn0.iconfinder.com/data/icons/mail-message-2/512/Mail-24-512.png" alt="Apps Developer Blog">
+    </div>
+    <div class="content">
+        <p th:text="'Hello ' + ${username} + ','"></p>
+        <p>Thank you for registering with our website. Please click on the link below to activate your account:</p>
+        <p><a th:href="${confirmationUrl}">Activate Account</a></p>
+        <p th:text="${activationCode}"></span></p>
+        <p>If you did not register with our website, please ignore this email.</p>
+    </div>
+    <div class="footer">
+        <p>Best Regards,<br>Apps Developer Blog</p>
+    </div>
+</div>
+</body>
+</html>
