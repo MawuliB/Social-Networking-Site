@@ -1,9 +1,6 @@
 package com.mawuli.sns.config;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.flogger.Flogger;
-import lombok.extern.java.Log;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +17,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.logging.Logger;
+
 
 @Configuration
 @RequiredArgsConstructor

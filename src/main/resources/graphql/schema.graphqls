@@ -1,17 +1,34 @@
 type Query {
     getAllUsers: [User]
+    getBlackListByContactId(contactId: Int): [BlackList]
+}
+
+type Mutation {
+    addToBlackList(blacklist: BlackListRequest): BlackList
+    removeFromBlackList(blacklist: Int): Boolean
 }
 
 type User {
     id: ID!
-    firstname: String!
-    lastname: String!
-    email: String!
-    dateOfBirth: String!
-    password: String!
+    firstname: String
+    lastname: String
+    email: String
+    dateOfBirth: String
+    password: String
     profile_image_url: String
-    enabled: Boolean!
-    created_at: String!
-    updated_at: String!
-    account_locked: Boolean!
+    enabled: Boolean
+    created_at: String
+    updated_at: String
+    account_locked: Boolean
+}
+
+input BlackListRequest {
+    user: Int!
+    contact: Int!
+}
+
+type BlackList {
+    id: Int
+    user: User
+    contact: User
 }

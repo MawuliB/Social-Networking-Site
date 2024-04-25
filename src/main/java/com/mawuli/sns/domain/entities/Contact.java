@@ -12,6 +12,7 @@ import lombok.*;
 @Table(name = "contacts", indexes = @Index(name = "index_user_id", columnList = "user_id"))
 public class Contact {
     @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
