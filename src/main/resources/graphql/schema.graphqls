@@ -1,0 +1,17 @@
+type Query {
+    getAllUsers: [User]
+}
+
+type User {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    email: String!
+    dateOfBirth: String!
+    password: String!
+    profile_image_url: String
+    enabled: Boolean!
+    created_at: String!
+    updated_at: String!
+    account_locked: Boolean!
+}

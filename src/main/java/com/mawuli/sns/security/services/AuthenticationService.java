@@ -83,7 +83,7 @@ public class AuthenticationService {
     }
 
     private void sendValidationEmail(User user) throws MessagingException {
-        var newToken = generateAndSaveActivationToken(user);
+        var newToken = generateAndSaveActivationCode(user);
 
         emailService.sendEmail(
                 user.getEmail(),
@@ -95,8 +95,8 @@ public class AuthenticationService {
         );
     }
 
-    private String generateAndSaveActivationToken(User user) {
-        String generatedToken = generateActivationToken(6);
+    private String generateAndSaveActivationCode(User user) {
+        String generatedToken = generateActivationCode(6);
         var token = Token.builder()
                 .token(generatedToken)
                 .createdAt(LocalDateTime.now())
@@ -107,7 +107,7 @@ public class AuthenticationService {
         return generatedToken;
     }
 
-    private String generateActivationToken(int length) {
+    private String generateActivationCode(int length) {
         String characters = "0123456789";
         StringBuilder tokenBuilder = new StringBuilder();
         SecureRandom secureRandom = new SecureRandom();
@@ -128,6 +128,8 @@ public class AuthenticationService {
         var claims = new HashMap<String, Object>();
         var user = (User) auth.getPrincipal();
         claims.put("fullname", user.getFullName());
+        claims.put("email", user.getEmail());
+
         var jwtToken = jwtService.generateToken(claims, user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -148,5 +150,6 @@ public class AuthenticationService {
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
+
     }
 }

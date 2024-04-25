@@ -41,7 +41,11 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/webjars/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/graphql",
+                                "/graphql/**",
+                                "/graphiql",
+                                "/graphiql/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
