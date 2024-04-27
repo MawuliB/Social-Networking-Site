@@ -12,4 +12,6 @@ public interface UserAccessRepository extends CrudRepository<User, Long>, Paging
     Optional<User>  findByEmail(String email);
 
     Optional<User>  findByUsernameOrEmail(String username, String email);
+    List<User> findByUsernameContainsIgnoreCaseOrEmailContainsIgnoreCase(String username, String email);
+
 }

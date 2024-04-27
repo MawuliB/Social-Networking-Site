@@ -1,4 +1,4 @@
-package com.mawuli.sns.exceptionhandler;
+package com.mawuli.sns.exceptionhandler.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

@@ -3,12 +3,16 @@ package com.mawuli.sns.services;
 import com.mawuli.sns.domain.dto.mappers.BlackListMapper;
 import com.mawuli.sns.domain.dto.request.BlackListDto;
 import com.mawuli.sns.domain.entities.BlackList;
+import com.mawuli.sns.exceptionhandler.graphql.EntityNotFoundException;
 import com.mawuli.sns.repositories.BlackListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +37,7 @@ public class BlackListService {
 
     public void removeContactFromBlackList(Integer blackListId) {
         BlackList blackListEntity = blackListRepository.findById(blackListId)
-                .orElseThrow(() -> new IllegalArgumentException("BlackList not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Blacklist not found"));
         blackListRepository.delete(blackListEntity);
     }
 

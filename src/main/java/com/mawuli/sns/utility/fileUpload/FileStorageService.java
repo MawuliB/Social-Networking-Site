@@ -82,4 +82,12 @@ public class FileStorageService {
         }
         return fileName.substring(0, lastDotIndex).toLowerCase();
     }
+
+    public void deleteFile(String filePath) {
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            log.error("Failed to delete file: {}", filePath, e);
+        }
+    }
 }

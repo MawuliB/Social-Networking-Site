@@ -13,8 +13,9 @@ public class UserMapper {
         var username = user.getUsername();
         var email = user.getEmail();
         var profilePictureUrl = user.getProfileImageUrl();
+        var profilePictureId = user.getProfileImageId();
 
-        return new UserDto(firstname, lastname, username, email, profilePictureUrl);
+        return new UserDto(firstname, lastname, username, email, profilePictureUrl, profilePictureId);
     }
 
     public static User mapToUser(UserDto userDto) {
@@ -24,6 +25,7 @@ public class UserMapper {
         user.setUsername(userDto.username());
         user.setEmail(userDto.email());
         user.setProfileImageUrl(userDto.profilePictureUrl());
+        user.setProfileImageId(userDto.profilePictureId());
 
         return user;
     }

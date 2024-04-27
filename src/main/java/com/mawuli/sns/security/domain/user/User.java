@@ -40,6 +40,8 @@ public class User implements UserDetails, Principal {
 
     private String password;
 
+    private String profileImageId;
+
     private String profileImageUrl;
 
     private boolean accountLocked;
