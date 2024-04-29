@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("home")
 @RequiredArgsConstructor
 @Tag(name = "Home Controller", description = "Endpoints for the home page")
 public class HomeController {
@@ -43,18 +43,15 @@ public class HomeController {
     String encodedPassword2 = passwordEncoder.encode(password2);
 
         @GetMapping("")
-        public ResponseEntity<?> home(Authorization authorization) {
+        public ResponseEntity<?> home(HttpServletRequest request) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-            String accessToken = oidcUser.getIdToken().getTokenValue();
 
-            return ResponseEntity.ok("Welcome to the home page" + accessToken);
-//            String token = request.getHeader("Authorization").substring(7);
-//            Map<String, Object> claims = jwtService.decodeToken(token);
-//            String fullname = (String) claims.get("fullname");
-//
-//            Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
-//            return ResponseEntity.ok("Hello you are authenticated as " + authenticatedUser.getName() + " with full name " + fullname + encodedPassword1 + " " + encodedPassword2);
+            String token = request.getHeader("Authorization").substring(7);
+            Map<String, Object> claims = jwtService.decodeToken(token);
+            String fullname = (String) claims.get("fullname");
+
+            Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+            return ResponseEntity.ok("Hello you are authenticated as " + authenticatedUser.getName() + " with full name " + fullname + encodedPassword1 + " " + encodedPassword2);
 
         }
 

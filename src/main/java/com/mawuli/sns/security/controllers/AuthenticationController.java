@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
@@ -35,5 +37,11 @@ public class AuthenticationController {
     @GetMapping("/activate-account")
     public void activateAccount(@RequestParam String token) throws MessagingException {
         service.activateAccount(token);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        return ResponseEntity.ok(service.refreshToken(refreshToken));
     }
 }

@@ -30,26 +30,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        if(request.getServletPath().contains("/api/v1/auth/")) {
-            filterChain.doFilter(request, response);
-            return;
+
+        // Get JWT token from the header Authorization
+        final String authHeader = request.getHeader("Authorization");
+
+        // Variables to store the JWT token and UserEmail extracted from the token.
+        String token = null;
+        String userEmail = null;
+        // Check JWT token is not null and begins with Bearer
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+            // Extract the userEmail from JWT token;
+            userEmail = jwtService.extractEmail(token);
         }
-        final String authorizationHeader = request.getHeader(AUTHORIZATION);
-        final String jwt;
-        final String userEmail;
-        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        jwt = authorizationHeader.substring(7);
-        userEmail = jwtService.extractEmail(jwt);
+        // Check if user is not authenticated
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if(jwtService.isTokenValid(jwt, userDetails)) {
+            // Get user details from database
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+            // Check if token is valid and update security context holder
+            if(jwtService.isTokenValid(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
+                        userDetails, null, userDetails.getAuthorities()
                 );
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
@@ -58,5 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+
     }
 }
