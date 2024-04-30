@@ -23,10 +23,12 @@ export class LoginComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       const refreshToken = params['refreshToken'];
+      const userJson = decodeURIComponent(params['user']);
 
       if (token && refreshToken) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('user', userJson);
         this.router.navigate(['/home']);
       }
     });
@@ -40,10 +42,12 @@ export class LoginComponent implements OnInit {
     this.http.post('http://localhost:8080/auth/authenticate', body).subscribe((response: any) => {
       const token = response['token'];
       const refreshToken = response['refreshToken'];
+      const user = response['user'];
   
       if (token && refreshToken) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/home']);
       }
     });
