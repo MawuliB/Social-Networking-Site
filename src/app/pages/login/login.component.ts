@@ -2,15 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,  ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  apiUrl = environment.API_URL;
 
   constructor(private route: ActivatedRoute, private router: Router,private http: HttpClient, private fb: FormBuilder) { }
 
@@ -39,7 +43,7 @@ export class LoginComponent implements OnInit {
       email: email,
       password: password
     }
-    this.http.post('http://localhost:8080/auth/authenticate', body).subscribe((response: any) => {
+    this.http.post(`${this.apiUrl}/auth/authenticate`, body).subscribe((response: any) => {
       const token = response['token'];
       const refreshToken = response['refreshToken'];
       const user = response['user'];
@@ -52,6 +56,10 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
+  get email() { return this.loginForm.get('email'); }
+
+  get password() { return this.loginForm.get('password'); }
 
   onSubmit() {
     this.login(this.loginForm.value.email!, this.loginForm.value.password!);
