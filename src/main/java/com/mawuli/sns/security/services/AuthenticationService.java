@@ -1,5 +1,7 @@
 package com.mawuli.sns.security.services;
 
+import com.mawuli.sns.domain.dto.mappers.UserMapper;
+import com.mawuli.sns.domain.dto.request.UserDto;
 import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.request.OAuthAuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
@@ -26,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,7 @@ public class AuthenticationService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
+                .username(request.getUsername())
                 .loginType("normal")
                 .password(passwordEncoder.encode(request.getPassword()))
                 .accountLocked(false)
@@ -159,6 +161,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .refreshToken(refreshToken.getToken())
+                .user(UserMapper.mapToUserDto(user))
                 .build();
     }
 
@@ -204,7 +207,7 @@ public class AuthenticationService {
     }
 
 //    @Transactional
-    public void activateAccount(String token) throws MessagingException {
+    public UserDto activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new IllegalStateException("Token not found"));
         if(LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
@@ -217,6 +220,8 @@ public class AuthenticationService {
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());
         tokenRepository.save(savedToken);
+
+        return UserMapper.mapToUserDto(user);
 
     }
 
@@ -236,6 +241,7 @@ public class AuthenticationService {
                 .firstname(firstName)
                 .lastname(lastName)
                 .email(email)
+                .username(email)
                 .loginType("oauth")
                 .accountLocked(false)
                 .enabled(true)
@@ -268,6 +274,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .refreshToken(refreshToken.getToken())
+                .user(UserMapper.mapToUserDto(user))
                 .build();
     }
 }

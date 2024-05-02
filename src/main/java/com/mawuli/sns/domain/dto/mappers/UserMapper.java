@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class UserMapper {
 
     public static UserDto mapToUserDto(User user) {
+        var id = user.getId();
         var firstname = user.getFirstname();
         var lastname = user.getLastname();
         var username = user.getUsername();
@@ -15,7 +16,7 @@ public class UserMapper {
         var profilePictureUrl = user.getProfileImageUrl();
         var profilePictureId = user.getProfileImageId();
 
-        return new UserDto(firstname, lastname, username, email, profilePictureUrl, profilePictureId);
+        return new UserDto(id, firstname, lastname, username, email, profilePictureUrl, profilePictureId);
     }
 
     public static User mapToUser(UserDto userDto) {

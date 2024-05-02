@@ -1,11 +1,15 @@
 type Query {
     getAllUsers: [User]
-    getBlackListByContactId(contactId: Int): [BlackList]
+    getAllContactByContactId(contactId: Int!): [Contact]
 }
 
 type Mutation {
-    addToBlackList(blacklist: BlackListRequest): BlackList
-    removeFromBlackList(blacklist: Int): Boolean
+    addToBlackList(contactId: Int!): Contact
+    removeFromBlackList(contactId: Int!): Boolean
+    acceptContactInvitation(contactId: Int!): Contact
+    addToContact(contact: ContactRequest): Contact
+    removeFromContact(contactId: Int!): Boolean
+#    setOrUpdateProfileImageUrl(profileImage: Upload!, id: ID!): String
 }
 
 type User {
@@ -13,6 +17,7 @@ type User {
     firstname: String
     lastname: String
     email: String
+    username: String
     dateOfBirth: String
     password: String
     profile_image_url: String
@@ -23,13 +28,19 @@ type User {
     account_locked: Boolean
 }
 
-input BlackListRequest {
+input ContactRequest {
     user: Int!
     contact: Int!
+    isAccepted: Boolean
+    isBlacklisted: Boolean
 }
 
-type BlackList {
+type Contact {
     id: Int
     user: User
     contact: User
+    isAccepted: Boolean
+    isBlacklisted: Boolean
 }
+
+#scalar Upload

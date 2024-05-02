@@ -20,6 +20,14 @@ public class GlobalExceptionHandlerForGraphQL {
                 .build();
     }
 
+    @GraphQlExceptionHandler(GeneralGraphQLExceptions.class)
+    public GraphQLError handleGeneralGraphQLExceptions(GeneralGraphQLExceptions exception) {
+        return GraphQLError
+                .newError()
+                .message(exception.getLocalizedMessage())
+                .build();
+    }
+
     @GraphQlExceptionHandler(InvalidDataAccessApiUsageException.class)
     public GraphQLError handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException exception) {
         return GraphQLError
@@ -28,10 +36,11 @@ public class GlobalExceptionHandlerForGraphQL {
                 .build();
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerException(NullPointerException exception) {
-        return ResponseEntity
-                .status(INTERNAL_SERVER_ERROR)
-                .body("Null pointer exception occurred");
+    @GraphQlExceptionHandler(NullPointerException.class)
+    public GraphQLError handleNullPointerException(NullPointerException exception) {
+        return GraphQLError
+                .newError()
+                .message(exception.getLocalizedMessage())
+                .build();
     }
 }

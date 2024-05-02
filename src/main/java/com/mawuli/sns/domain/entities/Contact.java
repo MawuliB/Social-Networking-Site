@@ -23,4 +23,6 @@ public class Contact {
     private User contact;
     private Boolean isAccepted;
 
+    private Boolean isBlacklisted;
+
 }

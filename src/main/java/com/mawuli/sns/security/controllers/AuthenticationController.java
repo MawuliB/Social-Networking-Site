@@ -1,5 +1,6 @@
 package com.mawuli.sns.security.controllers;
 
+import com.mawuli.sns.domain.dto.request.UserDto;
 import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
 import com.mawuli.sns.security.domain.dto.request.RegistrationRequest;
@@ -35,8 +36,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/activate-account")
-    public void activateAccount(@RequestParam String token) throws MessagingException {
-        service.activateAccount(token);
+    public ResponseEntity<UserDto> activateAccount(@RequestParam String token) throws MessagingException {
+        return ResponseEntity.ok(service.activateAccount(token));
     }
 
     @PostMapping("/refresh")

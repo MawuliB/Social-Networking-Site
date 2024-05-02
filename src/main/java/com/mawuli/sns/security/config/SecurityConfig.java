@@ -1,5 +1,6 @@
 package com.mawuli.sns.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
 import com.mawuli.sns.security.services.AuthenticationService;
 import com.mawuli.sns.security.services.JwtAuthenticationFilter;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,9 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authoriza
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -34,6 +39,10 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 //    private final OAuth2AuthorizedClientService authorizedClientService;
+
+    @Value("${frontend.url}")
+    String frontend_url = "http://localhost:4200";
+
     @Autowired
     private ApplicationContext context;
 
@@ -98,11 +107,15 @@ public class SecurityConfig {
                             AuthenticationResponse authResponse = getAuthenticationService().registerOAuthUser(email, name);
                             String jwtToken = authResponse.getToken();
                             String refreshToken = authResponse.getRefreshToken();
-                            log.error("Access Token: {}", jwtToken);
-                            log.error("Name: {}", name);
-                            log.error("Email: {}", email);
+//                            log.error("Access Token: {}", jwtToken);
+//                            log.error("Name: {}", name);
+//                            log.error("Email: {}", email);
 
-                            response.sendRedirect("http://localhost:4200?token=" + jwtToken + "&refreshToken=" + refreshToken);
+                            ObjectMapper mapper = new ObjectMapper();
+                            String userJson = mapper.writeValueAsString(authResponse.getUser());
+                            String encodedUserJson = URLEncoder.encode(userJson, StandardCharsets.UTF_8);
+
+                            response.sendRedirect(frontend_url + "?token=" + jwtToken + "&refreshToken=" + refreshToken + "&user=" + encodedUserJson);
                         })
                 );
 

@@ -19,8 +19,6 @@ public class RegistrationRequest {
     @NotBlank(message = "First name cannot be blank")
     private String firstname;
 
-    @NotEmpty(message = "Last name is required")
-    @NotBlank(message = "Last name cannot be blank")
     private String lastname;
 
     @NotEmpty(message = "Email is required")
