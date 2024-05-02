@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastComponent } from '../toast/toast.component';
 import { ToastGComponent } from '../toast-g/toast-g.component';
 import { SharedModule } from '../../services/shared.module';
@@ -10,8 +10,23 @@ import { SharedModule } from '../../services/shared.module';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
       @ViewChild(ToastComponent) toastComponent!: ToastComponent;
       @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
+
+      user = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      constructor() { }
+
+      ngOnInit(): void {
+        console.log('User:', this.user);
+      }
+
+      logout(): void {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
 
 }
