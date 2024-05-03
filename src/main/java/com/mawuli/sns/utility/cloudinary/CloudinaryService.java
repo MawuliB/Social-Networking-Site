@@ -37,11 +37,6 @@ public class CloudinaryService {
 
     public CloudinaryService() {
         try {
-//            Map<String, String> valuesMap = new HashMap<>();
-//            valuesMap.put("cloud_name", cloudName);
-//            valuesMap.put("api_key", apiKey);
-//            valuesMap.put("api_secret", apiSecret);
-//            cloudinary = new Cloudinary(valuesMap);
             log.error("CloudinaryService Url: {}", url);
             cloudinary = new Cloudinary("url");
         } catch (Exception e) {
