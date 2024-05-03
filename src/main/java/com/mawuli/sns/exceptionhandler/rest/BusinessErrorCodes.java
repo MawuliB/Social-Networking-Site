@@ -1,4 +1,4 @@
-package com.mawuli.sns.exceptionhandler;
+package com.mawuli.sns.exceptionhandler.rest;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

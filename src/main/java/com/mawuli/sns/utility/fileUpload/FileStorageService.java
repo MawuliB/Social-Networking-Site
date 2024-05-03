@@ -26,10 +26,10 @@ public class FileStorageService {
 
     public String saveFile(
             @Nonnull MultipartFile sourceFile,
-            @Nonnull Integer bookId,
+            @Nonnull String destinationFolder,
             @Nonnull Integer userId
     ) {
-        final String fileUploadSubPath = "users" + separator + userId;
+        final String fileUploadSubPath = "users" + separator + userId + separator + destinationFolder;
         return uploadFile(sourceFile, fileUploadSubPath);
     }
 
@@ -48,7 +48,8 @@ public class FileStorageService {
             }
         }
         final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-        String targetFilePath = finalUploadPath + separator + currentTimeMillis() + "." + fileExtension;
+        final String fileName = getFileName(sourceFile.getOriginalFilename());
+        String targetFilePath = finalUploadPath + separator + fileName + "." + fileExtension;
         Path targetPath = Paths.get(targetFilePath);
         try {
             Files.write(targetPath, sourceFile.getBytes());
@@ -69,5 +70,24 @@ public class FileStorageService {
             return "";
         }
         return fileName.substring(lastDotIndex + 1).toLowerCase();
+    }
+
+    private String getFileName(String fileName) {
+        if (fileName == null || fileName.isEmpty()) {
+            return "";
+        }
+        int lastDotIndex = fileName.lastIndexOf(".");
+        if (lastDotIndex == -1) {
+            return "";
+        }
+        return fileName.substring(0, lastDotIndex).toLowerCase();
+    }
+
+    public void deleteFile(String filePath) {
+        try {
+            Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            log.error("Failed to delete file: {}", filePath, e);
+        }
     }
 }

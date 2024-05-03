@@ -1,4 +1,4 @@
-package com.mawuli.sns.exceptionhandler;
+package com.mawuli.sns.exceptionhandler.rest;
 
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
 
     @ExceptionHandler(LockedException.class)
     public ResponseEntity<ExceptionResponse> handleException(LockedException exception) {

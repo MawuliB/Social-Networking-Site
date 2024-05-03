@@ -1,17 +1,44 @@
 type Query {
     getAllUsers: [User]
+    getAllContactByContactId(contactId: Int!): [Contact]
+}
+
+type Mutation {
+    addToBlackList(contactId: Int!): Contact
+    removeFromBlackList(contactId: Int!): Boolean
+    acceptContactInvitation(contactId: Int!): Contact
+    addToContact(contact: ContactRequest): Contact
+    removeFromContact(contactId: Int!): Boolean
+#    setOrUpdateProfileImageUrl(profileImage: Upload!, id: ID!): String
 }
 
 type User {
     id: ID!
-    firstname: String!
-    lastname: String!
-    email: String!
-    dateOfBirth: String!
-    password: String!
+    firstname: String
+    lastname: String
+    email: String
+    username: String
     profile_image_url: String
-    enabled: Boolean!
-    created_at: String!
-    updated_at: String!
-    account_locked: Boolean!
+    profile_image_id: String
+    enabled: Boolean
+    created_at: String
+    updated_at: String
+    account_locked: Boolean
 }
+
+input ContactRequest {
+    user: Int!
+    contact: Int!
+    isAccepted: Boolean
+    isBlacklisted: Boolean
+}
+
+type Contact {
+    id: Int
+    user: User
+    contact: User
+    isAccepted: Boolean
+    isBlacklisted: Boolean
+}
+
+#scalar Upload

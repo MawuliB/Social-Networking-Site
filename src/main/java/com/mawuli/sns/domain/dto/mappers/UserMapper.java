@@ -2,17 +2,21 @@ package com.mawuli.sns.domain.dto.mappers;
 
 import com.mawuli.sns.domain.dto.request.UserDto;
 import com.mawuli.sns.security.domain.user.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserMapper {
 
     public static UserDto mapToUserDto(User user) {
+        var id = user.getId();
         var firstname = user.getFirstname();
         var lastname = user.getLastname();
-        var username = user.getUsername();
+        var username = user.getUserName();
         var email = user.getEmail();
         var profilePictureUrl = user.getProfileImageUrl();
+        var profilePictureId = user.getProfileImageId();
 
-        return new UserDto(firstname, lastname, username, email, profilePictureUrl);
+        return new UserDto(id, firstname, lastname, username, email, profilePictureUrl, profilePictureId);
     }
 
     public static User mapToUser(UserDto userDto) {
@@ -22,6 +26,7 @@ public class UserMapper {
         user.setUsername(userDto.username());
         user.setEmail(userDto.email());
         user.setProfileImageUrl(userDto.profilePictureUrl());
+        user.setProfileImageId(userDto.profilePictureId());
 
         return user;
     }

@@ -1,5 +1,6 @@
 package com.mawuli.sns.security.controllers;
 
+import com.mawuli.sns.domain.dto.request.UserDto;
 import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
 import com.mawuli.sns.security.domain.dto.request.RegistrationRequest;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
@@ -33,7 +36,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/activate-account")
-    public void activateAccount(@RequestParam String token) throws MessagingException {
-        service.activateAccount(token);
+    public ResponseEntity<UserDto> activateAccount(@RequestParam String token) throws MessagingException {
+        return ResponseEntity.ok(service.activateAccount(token));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        return ResponseEntity.ok(service.refreshToken(refreshToken));
     }
 }

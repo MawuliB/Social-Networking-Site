@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SharedContent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -3,7 +3,9 @@ package com.mawuli.sns.domain.dto.mappers;
 import com.mawuli.sns.domain.dto.request.ContentDto;
 import com.mawuli.sns.domain.entities.Content;
 import com.mawuli.sns.security.domain.user.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ContentMapper {
 
     public static ContentDto mapToContentDto(Content content) {

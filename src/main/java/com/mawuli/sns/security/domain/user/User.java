@@ -40,10 +40,14 @@ public class User implements UserDetails, Principal {
 
     private String password;
 
+    private String profileImageId;
+
     private String profileImageUrl;
 
     private boolean accountLocked;
     private boolean enabled;
+
+    private String loginType;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
@@ -76,6 +80,10 @@ public class User implements UserDetails, Principal {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getUserName() {
+        return username;
     }
 
     @Override
