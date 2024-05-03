@@ -1,18 +1,14 @@
 package com.mawuli.sns.controllers;
 
-import com.mawuli.sns.domain.dto.mappers.BlackListMapper;
 import com.mawuli.sns.domain.entities.Contact;
 import com.mawuli.sns.services.ContactService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 
 @Controller
@@ -21,7 +17,6 @@ import java.util.List;
 public class BlackListController {
 
     private final ContactService contactService;
-    private final BlackListMapper blackListMapper;
     private final Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
 //    private final String authenticatedUserEmail = authenticatedUser.getName();
 

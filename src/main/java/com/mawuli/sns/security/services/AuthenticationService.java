@@ -209,13 +209,20 @@ public class AuthenticationService {
 //    @Transactional
     public UserDto activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
-                .orElseThrow(() -> new IllegalStateException("Token not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        BAD_REQUEST,
+                        "Invalid Token"));
         if(LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
             sendValidationEmail(savedToken.getUser());
-            throw new IllegalStateException("Token has expired. Check Email For New Token");
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Token expired. A new activation code has been sent to your email"
+                    );
         }
         var user = userRepository.findById(savedToken.getUser().getId())
-                .orElseThrow(() -> new IllegalStateException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        BAD_REQUEST,
+                        "User not found"));
         user.setEnabled(true);
         userRepository.save(user);
         savedToken.setValidatedAt(LocalDateTime.now());
@@ -241,7 +248,7 @@ public class AuthenticationService {
                 .firstname(firstName)
                 .lastname(lastName)
                 .email(email)
-                .username(email)
+                .username(firstName)
                 .loginType("oauth")
                 .accountLocked(false)
                 .enabled(true)

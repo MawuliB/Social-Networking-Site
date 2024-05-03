@@ -35,8 +35,6 @@ public class CloudinaryService {
 
     Cloudinary cloudinary;
 
-    private Environment env;
-
     public CloudinaryService() {
         try {
 //            Map<String, String> valuesMap = new HashMap<>();
@@ -45,7 +43,7 @@ public class CloudinaryService {
 //            valuesMap.put("api_secret", apiSecret);
 //            cloudinary = new Cloudinary(valuesMap);
             log.error("CloudinaryService Url: {}", url);
-            cloudinary = new Cloudinary(url);
+            cloudinary = new Cloudinary("cloudinary://932645885612349:yY0N7jInhrmuAmKwH9IUul8lM8U@dlzewc2k7");
         } catch (Exception e) {
             CloudinaryService.log.error("Error creating CloudinaryService: {}", e.getMessage());
         }

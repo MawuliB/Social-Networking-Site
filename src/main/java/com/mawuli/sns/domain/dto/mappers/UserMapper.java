@@ -11,7 +11,7 @@ public class UserMapper {
         var id = user.getId();
         var firstname = user.getFirstname();
         var lastname = user.getLastname();
-        var username = user.getUsername();
+        var username = user.getUserName();
         var email = user.getEmail();
         var profilePictureUrl = user.getProfileImageUrl();
         var profilePictureId = user.getProfileImageId();

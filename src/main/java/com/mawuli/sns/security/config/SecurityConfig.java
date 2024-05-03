@@ -35,7 +35,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 //    private final OAuth2AuthorizedClientService authorizedClientService;
@@ -82,10 +81,7 @@ public class SecurityConfig {
                                 "/graphiql/**",
                                 "/login",
                                 "/public/**",
-                                "oauth2/**",
-                                "/test",
-                                "/private",
-                                "/public/**"
+                                "oauth2/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
@@ -107,9 +103,6 @@ public class SecurityConfig {
                             AuthenticationResponse authResponse = getAuthenticationService().registerOAuthUser(email, name);
                             String jwtToken = authResponse.getToken();
                             String refreshToken = authResponse.getRefreshToken();
-//                            log.error("Access Token: {}", jwtToken);
-//                            log.error("Name: {}", name);
-//                            log.error("Email: {}", email);
 
                             ObjectMapper mapper = new ObjectMapper();
                             String userJson = mapper.writeValueAsString(authResponse.getUser());

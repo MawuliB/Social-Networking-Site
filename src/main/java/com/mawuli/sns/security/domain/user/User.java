@@ -79,6 +79,10 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getUsername() {
+        return email;
+    }
+
+    public String getUserName() {
         return username;
     }
 
