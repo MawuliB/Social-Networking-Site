@@ -29,14 +29,7 @@ mutation UpdateUser($id: ID!, $user: UserUpdateRequest!) {
 
 export const UPDATE_USER_PASSWORD = gql`
 mutation UpdatePassword($id: ID!, $oldPassword: String!, $newPassword: String!) {
-    updatePassword(id: $id, oldPassword: $oldPassword, newPassword: $newPassword) {
-        id
-        firstname
-        lastname
-        email
-        username
-        profileImageUrl
-    }
+    updatePassword(id: $id, oldPassword: $oldPassword, newPassword: $newPassword)
 }
 `;
 
