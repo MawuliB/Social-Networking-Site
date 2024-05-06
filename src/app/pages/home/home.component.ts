@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import { Apollo } from 'apollo-angular';
 import { GET_ALL_CONTACTS } from '../../services/graphql.operations';
 import { ContactService } from '../../services/contact.service';
-import { Contact } from '../../interface/contact';
+import { UserService } from '../../services/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -33,11 +34,13 @@ export class HomeComponent implements OnInit {
   @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
+  token = localStorage.getItem('token') || '';
 
   contacts: any[] = [];
   errors: any;
+  PRODUCTION = environment.production;
 
-  constructor(private apollo: Apollo, private contactService: ContactService) {}
+  constructor(private apollo: Apollo, private contactService: ContactService, private userService: UserService) {}
 
   activeComponent = 'find-contacts';
 
@@ -48,12 +51,37 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     const storedComponent = localStorage.getItem('activeComponent');
+    this.userService.getUserByToken(this.token).subscribe({
+      next: (user: any) => {
+        if(!this.PRODUCTION){
+            let userProfileImageUrl = user.getUserByToken.profileImageUrl;
+        userProfileImageUrl = userProfileImageUrl.replace(/\\/g, '/'); // remove for production
+        // Strip the unnecessary part of the path
+        const prefix = "C:/Users/MawuliBadassou/Desktop/Samples/JavaCodes/sns/../../../Samples/Angular/sns/src/";
+        if (userProfileImageUrl.startsWith(prefix)) {
+          userProfileImageUrl = "./" + userProfileImageUrl.substring(prefix.length);
+        }
+        this.user = { ...user.getUserByToken, profileImageUrl: userProfileImageUrl };
+        localStorage.setItem('user', JSON.stringify(this.user));
+      }else{
+        this.user = { ...user.getUserByToken };
+        localStorage.setItem('user', JSON.stringify(this.user));
+      }
+        if (storedComponent) {
+          this.activeComponent = storedComponent;
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.errors = error;
+      }
+    });
     if (storedComponent) {
       this.activeComponent = storedComponent;
     }
   }
 
-  
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');

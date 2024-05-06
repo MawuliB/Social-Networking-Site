@@ -1,9 +1,9 @@
-import { Contact } from "./contact"
+import { User } from "./user"
 
 export interface ContactList {
     id: number
-    user: Contact
-    contact: Contact
+    user: User
+    contact: User
     isAccepted: Boolean
     isBlacklisted: Boolean
 }
