@@ -57,7 +57,7 @@ public class HomeController {
 
         @PostMapping(value = "/upload", consumes = "multipart/form-data")
         public ResponseEntity<?> upload(@Valid @Parameter @RequestPart("file") MultipartFile file) throws IOException {
-            var filename = userService.setOrUpdateProfileImageUrl(file, 1);
+            var filename = userService.setOrUpdateProfileImageUrl(file, 2);
             return ResponseEntity.ok("File uploaded successfully " + filename);
         }
 }

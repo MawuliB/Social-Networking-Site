@@ -6,6 +6,7 @@ import org.springframework.graphql.data.method.annotation.GraphQlExceptionHandle
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -22,6 +23,22 @@ public class GlobalExceptionHandlerForGraphQL {
 
     @GraphQlExceptionHandler(GeneralGraphQLExceptions.class)
     public GraphQLError handleGeneralGraphQLExceptions(GeneralGraphQLExceptions exception) {
+        return GraphQLError
+                .newError()
+                .message(exception.getLocalizedMessage())
+                .build();
+    }
+
+    @GraphQlExceptionHandler(UsernameAlreadyExistException.class)
+    public GraphQLError handleUsernameAlreadyExistException(UsernameAlreadyExistException exception) {
+        return GraphQLError
+                .newError()
+                .message(exception.getLocalizedMessage())
+                .build();
+    }
+
+    @GraphQlExceptionHandler(InvalidOldPasswordException.class)
+    public GraphQLError handleInvalidOldPasswordException(InvalidOldPasswordException exception) {
         return GraphQLError
                 .newError()
                 .message(exception.getLocalizedMessage())

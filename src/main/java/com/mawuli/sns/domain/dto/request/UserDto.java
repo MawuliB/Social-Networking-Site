@@ -9,7 +9,7 @@ public record UserDto(
         String lastname,
         String username,
         String email,
-        String profilePictureUrl,
-        String profilePictureId
+        String profileImageUrl,
+        String profileImageId
 ) {
 }

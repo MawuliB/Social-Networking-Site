@@ -1,6 +1,7 @@
 type Query {
     getAllUsers: [User]
     getAllContactByContactId(contactId: Int!): [Contact]
+    getUserByToken(token: String!): User
 }
 
 type Mutation {
@@ -10,6 +11,8 @@ type Mutation {
     addToContact(contact: ContactRequest): Contact
     removeFromContact(contactId: Int!): Boolean
 #    setOrUpdateProfileImageUrl(profileImage: Upload!, id: ID!): String
+    updateUser(user: UserUpdateRequest, id: ID!): User
+    updatePassword(newPassword: String!, oldPassword: String!, id: ID!): Boolean
 }
 
 type User {
@@ -18,12 +21,12 @@ type User {
     lastname: String
     email: String
     username: String
-    profile_image_url: String
-    profile_image_id: String
+    profileImageId: String
+    profileImageUrl: String
     enabled: Boolean
-    created_at: String
-    updated_at: String
-    account_locked: Boolean
+    createdAt: String
+    updatedAt: String
+    accountLocked: Boolean
 }
 
 input ContactRequest {
@@ -31,6 +34,12 @@ input ContactRequest {
     contact: Int!
     isAccepted: Boolean
     isBlacklisted: Boolean
+}
+
+input UserUpdateRequest {
+    firstname: String
+    lastname: String
+    username: String
 }
 
 type Contact {

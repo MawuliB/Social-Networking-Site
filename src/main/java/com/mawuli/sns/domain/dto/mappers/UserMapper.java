@@ -25,8 +25,8 @@ public class UserMapper {
         user.setLastname(userDto.lastname());
         user.setUsername(userDto.username());
         user.setEmail(userDto.email());
-        user.setProfileImageUrl(userDto.profilePictureUrl());
-        user.setProfileImageId(userDto.profilePictureId());
+        user.setProfileImageUrl(userDto.profileImageUrl());
+        user.setProfileImageId(userDto.profileImageId());
 
         return user;
     }

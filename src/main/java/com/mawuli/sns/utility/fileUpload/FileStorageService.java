@@ -43,7 +43,7 @@ public class FileStorageService {
         if (!targetFolder.exists()) {
             boolean folderCreated = targetFolder.mkdirs();
             if (!folderCreated) {
-                log.warn("Failed to create the target folder: " + targetFolder);
+                log.warn("Failed to create the target folder: {}", targetFolder);
                 return null;
             }
         }
@@ -53,8 +53,8 @@ public class FileStorageService {
         Path targetPath = Paths.get(targetFilePath);
         try {
             Files.write(targetPath, sourceFile.getBytes());
-            log.info("File saved to: " + targetFilePath);
-            return targetFilePath;
+            log.info("File saved to: {}", targetFilePath);
+            return targetPath.toAbsolutePath().toString(); // return absolute path
         } catch (IOException e) {
             log.error("File was not saved", e);
         }
