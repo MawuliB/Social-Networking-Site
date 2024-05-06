@@ -3,8 +3,8 @@ import { ToastGComponent } from '../toast-g/toast-g.component';
 import { ToastComponent } from '../toast/toast.component';
 import { SharedModule } from '../../services/shared.module';
 import { ContactService } from '../../services/contact.service';
-import { Contact } from '../../interface/contact';
 import { CommonModule } from '@angular/common';
+import { User } from '../../interface/user';
 
 @Component({
   selector: 'app-find-contacts',
@@ -26,7 +26,7 @@ export class FindContactsComponent implements OnInit {
 
       ngOnInit(): void {
         this.contactService.getAllContacts().subscribe({
-          next: (contacts: Contact[]) => {
+          next: (contacts: User[]) => {
             this.contacts = contacts;
           },
           error: (error: any) => {
