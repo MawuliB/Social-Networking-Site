@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { GET_USER_BY_TOKEN, UPDATE_USER, UPDATE_USER_PASSWORD } from './graphql.operations';
-import { UserUpdateRequest } from '../interface/user';
-import { map, Observable } from 'rxjs';
-
+import { User, UserUpdateRequest } from '../interface/user';
+import { catchError, map, Observable, switchMap, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -14,12 +13,18 @@ export class UserService {
   constructor(private apollo: Apollo) { }
 
   getUserByToken(token: string): Observable<any> {
-    return this.apollo.query({
+    const query = this.apollo.watchQuery<{ getUserByToken: any }>({
       query: GET_USER_BY_TOKEN,
       variables: {
         token
       }
-    }).pipe(map(response => response.data));
+    });
+  
+    return query.valueChanges.pipe(
+      switchMap(() => query.refetch()),
+      map(response => response.data),
+      catchError(error => throwError(error))
+    );
   }
 
   updateUser(id: string, user: UserUpdateRequest) { 

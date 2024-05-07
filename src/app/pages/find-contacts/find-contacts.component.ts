@@ -1,38 +1,56 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, PipeTransform, ViewChild } from '@angular/core';
 import { ToastGComponent } from '../toast-g/toast-g.component';
 import { ToastComponent } from '../toast/toast.component';
 import { SharedModule } from '../../services/shared.module';
 import { ContactService } from '../../services/contact.service';
 import { CommonModule } from '@angular/common';
 import { User } from '../../interface/user';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-find-contacts',
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [FormsModule, SharedModule, CommonModule],
   templateUrl: './find-contacts.component.html',
-  styleUrl: './find-contacts.component.css'
+  styleUrl: './find-contacts.component.css',
 })
 export class FindContactsComponent implements OnInit {
-
   @ViewChild(ToastComponent) toastComponent!: ToastComponent;
-      @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
+  @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
 
-      user = JSON.parse(localStorage.getItem('user') || '{}');
-      contacts: any[] = [];
-      errors: any;
-      
-      constructor(private contactService: ContactService) { }
+  user = JSON.parse(localStorage.getItem('user') || '{}');
+  contacts: any[] = [];
+  errors: any;
+  searchTerm = '';
 
-      ngOnInit(): void {
-        this.contactService.getAllContacts().subscribe({
-          next: (contacts: User[]) => {
-            this.contacts = contacts;
-          },
-          error: (error: any) => {
-            console.error(error);
-            this.errors = error;
-          }
-        });
-      }
+  constructor(private contactService: ContactService) {}
+
+  sendInvite(arg0: any) {
+    if (this.user.id) {
+      this.contactService.addToContact(this.user.id, arg0).subscribe({
+        next: (response: any) => {
+          this.toastGComponent.openToast('Invite sent successfully!');
+        },
+        error: (error: any) => {
+          const errorMessage = error.graphQLErrors[0].message;
+          this.toastComponent.openToast(errorMessage);
+        },
+      });
+    } else {
+      this.toastComponent.openToast('Please login to send invite');
+      window.location.href = '/login';
+    }
+  }
+
+  ngOnInit(): void {
+    this.contactService.getAllContacts().subscribe({
+      next: (contacts: User[]) => {
+        this.contacts = contacts;
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.errors = error;
+      },
+    });
+  }
 }

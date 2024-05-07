@@ -13,6 +13,53 @@ query GetAllUsers {
 }
 `;
 
+export const GET_ALL_CONTACT_BY_CONTACT_ID = gql`
+query GetAllContactByContactId($contactId: Int!) {
+    getAllContactByContactId(contactId: $contactId) {
+        id
+        isAccepted
+        isBlacklisted
+        contact {
+            id
+            firstname
+            lastname
+            email
+            username
+            profileImageUrl
+        }
+    }
+}
+`;
+
+export const REMOVE_FROM_BLACKLIST = gql`
+mutation RemoveFromBlackList($id: Int!) {
+    removeFromBlackList(contactId: $id)
+}
+`;
+
+export const REMOVE_FROM_CONTACTS = gql`
+mutation RemoveFromContact($id: Int!) {
+    removeFromContact(contactId: $id)
+}
+`;
+
+export const ADD_TO_CONTACT = gql`
+mutation AddContact($user: Int!, $contact: Int!, $isAccepted: Boolean!, $isBlacklisted: Boolean!) {
+    addToContact(contact: { user: $user, contact: $contact, isAccepted: $isAccepted, isBlacklisted: $isBlacklisted }) {
+        contact {
+            id
+            firstname
+            lastname
+            email
+            username
+            profileImageUrl
+        }
+        isAccepted
+        isBlacklisted
+    }
+}
+`;
+
 export const UPDATE_USER = gql`
 mutation UpdateUser($id: ID!, $user: UserUpdateRequest!) {
     updateUser(id: $id, user: $user) {
@@ -42,6 +89,24 @@ query GetUserByToken($token: String!) {
         email
         username
         profileImageUrl
+    }
+}
+`;
+
+export const GET_INVITATIONS = gql`
+query GetInvitationsUserId($userId: Int!) {
+    getInvitationsByUserId(userId: $userId) {
+        id
+        isAccepted
+        isBlacklisted
+        user {
+            id
+            firstname
+            lastname
+            email
+            username
+            profileImageUrl
+        }
     }
 }
 `;
