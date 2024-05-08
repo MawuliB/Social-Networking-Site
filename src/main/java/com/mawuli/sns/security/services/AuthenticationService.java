@@ -80,14 +80,6 @@ public class AuthenticationService {
             );
         }
 
-        //check if password is too long
-        if(request.getPassword().length() > 100){
-            throw new ResponseStatusException(
-                    BAD_REQUEST,
-                    "Password too long"
-            );
-        }
-
         //check for a valid password
         if(!validatePassword.isValidPassword(request.getPassword())) {
             throw new ResponseStatusException(

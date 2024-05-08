@@ -74,6 +74,13 @@ public class ContactService {
         if (contact.isPresent()) {
             contact.get().setIsAccepted(true);
             contactRepository.save(contact.get());
+            //create a new contact for the other user
+            var newContact = new Contact();
+            newContact.setUser(contact.get().getContact());
+            newContact.setContact(contact.get().getUser());
+            newContact.setIsBlacklisted(false);
+            newContact.setIsAccepted(true);
+            contactRepository.save(newContact);
         } else {
             throw new EntityNotFoundException("Contact does not exist");
         }
