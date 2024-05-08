@@ -32,6 +32,7 @@ import { environment } from '../../../environments/environment';
 export class HomeComponent implements OnInit {
   @ViewChild(ToastComponent) toastComponent!: ToastComponent;
   @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
+  @ViewChild(FindContactsComponent) findContactsComponent!: FindContactsComponent;
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
   token = localStorage.getItem('token') || '';
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
   errors: any;
   PRODUCTION = environment.production;
 
-  constructor(private apollo: Apollo, private contactService: ContactService, private userService: UserService) {}
+  constructor(private userService: UserService) {}
 
   activeComponent = 'find-contacts';
 
@@ -67,19 +68,23 @@ export class HomeComponent implements OnInit {
         this.user = { ...user.getUserByToken };
         localStorage.setItem('user', JSON.stringify(this.user));
       }
-        if (storedComponent) {
-          this.activeComponent = storedComponent;
-        }
       },
       error: (error: any) => {
+        this.logout();
         console.error(error);
-        this.errors = error;
+        const errorMessage = error.graphQLErrors[0].message;
+        this.toastComponent.openToast(errorMessage);
       }
     });
     if (storedComponent) {
       this.activeComponent = storedComponent;
     }
   }
+
+  refreshSettings() {
+    // refresh page
+    window.location.href = '/home';
+    }
 
 
   logout(): void {

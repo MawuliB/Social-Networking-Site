@@ -1,1 +1,73 @@
-<p>my-contacts works!</p>
+<app-toast></app-toast>
+<app-toast-g></app-toast-g>
+<div
+  class="mt-14 w-full max-w-2xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+>
+  <div class="flex items-center justify-between mb-4">
+    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+      My Contacts
+    </h5>
+    <a (click)="getContactsById()" class="cursor-pointer text-sm font-medium text-blue-600 hover:underline dark:text-blue-500" style="text-decoration: none; color: inherit;">
+        <i class="fas fa-sync-alt"></i>
+    </a>
+  </div>
+  <div class="flow-root">
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-4" *ngIf="contacts">
+      <ng-container *ngFor="let contact of contacts">
+        <li class="py-3 sm:py-4" *ngIf="!contact.isBlacklisted">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <img
+                class="w-8 h-8 rounded-full"
+                src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
+                alt="Profile"
+              />
+            </div>
+            <div class="flex-1 min-w-0 ms-4">
+              <p
+                class="text-sm font-medium text-gray-900 truncate dark:text-white"
+              >
+                {{ contact.contact.firstname }} {{ contact.contact.lastname }}
+              </p>
+              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                {{ contact.contact.email }}
+              </p>
+            </div>
+            <div
+              class="float-start inline-flex items-center text-base font-semibold text-gray-900 dark:text-white border border-gray-200 rounded-lg px-2 py-1 ms-auto"
+              [class.bg-green-200]="contact.isAccepted"
+              [class.bg-gray-200]="!contact.isAccepted"
+            >
+              <span class="p-0" *ngIf="contact.isAccepted; else pendingBlock"
+                >Friends</span
+              >
+              <ng-template #pendingBlock
+                ><span class="p-0">Pending</span></ng-template
+              >
+            </div>
+            <div
+              class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+            >
+            <button
+              (click)="blackListContact(contact.id)"
+              class="text-black-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Blacklist
+            </button>
+              <button
+                (click)="removeContact(contact.id)"
+                class="ml-4 text-red-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Remove
+              </button>
+            </div>
+            <div
+              class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+            >
+            </div>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>

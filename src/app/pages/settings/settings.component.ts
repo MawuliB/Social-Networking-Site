@@ -13,6 +13,7 @@ import { ToastComponent } from '../toast/toast.component';
 import { ToastGComponent } from '../toast-g/toast-g.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { ContactService } from '../../services/contact.service';
 
 @Component({
   selector: 'app-settings',
@@ -28,18 +29,17 @@ export class SettingsComponent {
   user = JSON.parse(localStorage.getItem('user') || '{}');
   token = localStorage.getItem('token') || '';
 
+  blacklist: any[] = [];
   errors: any;
   API_URL = environment.API_URL;
   PRODUCTION = environment.production;
 
-  openEditAvatarModal() {
-    throw new Error('Method not implemented.');
-  }
-  userForm: any;
+  selectedFile: File | null = null;
 
   constructor(
     private http: HttpClient,
     private userService: UserService,
+    private contactService: ContactService,
     private fb: FormBuilder
   ) {}
 
@@ -67,13 +67,37 @@ export class SettingsComponent {
         this.errors = error;
       }
     });
-    
+
     this.editProfileForm.setValue({
       firstname: this.user.firstname,
       lastname: this.user.lastname,
       username: this.user.username,
     });
+
+    this.contactService.getAllContactByContactId(this.user.id).subscribe({
+      next: (contacts: any[]) => {
+        this.blacklist = contacts;
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.errors = error;
+      },
+    });
   }
+
+  removeFromBlacklist(arg0: any) {
+    console.log(arg0);
+    this.contactService.removeFromBlackList(arg0).subscribe({
+      next: (response: any) => {
+        this.toastGComponent.openToast('User removed from blacklist');
+        this.blacklist = this.blacklist.filter((user) => user.id !== arg0);
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastComponent.openToast('Error removing user from blacklist');
+      },
+    });
+    }
 
   editProfileForm = this.fb.group({
     firstname: [this.user.firstname, Validators.required],
@@ -174,8 +198,6 @@ export class SettingsComponent {
     }
   }
 
-  selectedFile: File | null = null;
-
   onFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
@@ -273,5 +295,17 @@ export class SettingsComponent {
 
   get confirmPassword() {
     return this.changePasswordForm.get('confirmPassword');
+  }
+
+  get firstname() {
+    return this.editProfileForm.get('firstname');
+  }
+
+  get lastname() {
+    return this.editProfileForm.get('lastname');
+  }
+
+  get username() {
+    return this.editProfileForm.get('username');
   }
 }

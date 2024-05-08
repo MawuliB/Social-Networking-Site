@@ -14,3 +14,12 @@ export interface ContactRequest {
     isAccepted: Boolean
     isBlacklisted: Boolean
 }
+
+export interface GetAllContactsResponse {
+    getAllContactByContactId: {
+      "id": number,
+      "isAccepted": boolean,
+      "isBlacklisted": boolean,
+      "contact": User[]
+    };
+  }
