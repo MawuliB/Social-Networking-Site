@@ -22,11 +22,10 @@ export class InvitesComponent implements OnInit{
   constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
-    this.getContactsById();
-    console.log(this.invites)
+    this.getInvitationsById();
   }
 
-  getContactsById() {
+  getInvitationsById() {
     this.contactService.getInvitations(this.user.id).subscribe({
       next: (invite: any[]) => {
         this.invites = invite;
@@ -40,9 +39,29 @@ export class InvitesComponent implements OnInit{
   }
 
   removeContact(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
+    this.contactService.removeFromContacts(arg0).subscribe({
+      next: (response: any) => {
+        this.toastGComponent.openToast('Contact removed successfully!');
+        this.invites = this.invites.filter((contact) => contact.id !== arg0);
+      },
+      error: (error: any) => {
+        console.error(error);
+        const errorMessage = error.graphQLErrors[0].message;
+          this.toastComponent.openToast(errorMessage);
+      },
+    });
+    }
   acceptContact(arg0: any) {
-    throw new Error('Method not implemented.');
+    this.contactService.acceptInvitation(arg0).subscribe({
+      next: (response: any) => {
+        this.toastGComponent.openToast('Invite accepted successfully!');
+        this.invites = this.invites.filter((contact) => contact.id !== arg0);
+      },
+      error: (error: any) => {
+        console.error(error);
+        const errorMessage = error.graphQLErrors[0].message;
+          this.toastComponent.openToast(errorMessage);
+      },
+    });
     }
 }

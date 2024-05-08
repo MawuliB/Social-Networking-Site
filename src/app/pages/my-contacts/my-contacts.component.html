@@ -1,7 +1,7 @@
 <app-toast></app-toast>
 <app-toast-g></app-toast-g>
 <div
-  class="mt-14 w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+  class="mt-14 w-full max-w-2xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
 >
   <div class="flex items-center justify-between mb-4">
     <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
@@ -46,14 +46,24 @@
               >
             </div>
             <div
-              class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+              class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
             >
+            <button
+              (click)="blackListContact(contact.id)"
+              class="text-black-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Blacklist
+            </button>
               <button
                 (click)="removeContact(contact.id)"
-                class="text-red-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                class="ml-4 text-red-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Remove
               </button>
+            </div>
+            <div
+              class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+            >
             </div>
           </div>
         </li>

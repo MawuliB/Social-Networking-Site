@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { ADD_TO_CONTACT, GET_ALL_CONTACT_BY_CONTACT_ID, GET_ALL_CONTACTS, GET_INVITATIONS, REMOVE_FROM_BLACKLIST, REMOVE_FROM_CONTACTS} from './graphql.operations';
+import { ACCEPT_INVITATION, ADD_TO_BLACKLIST, ADD_TO_CONTACT, GET_ALL_CONTACT_BY_CONTACT_ID, GET_ALL_CONTACTS, GET_INVITATIONS, REMOVE_FROM_BLACKLIST, REMOVE_FROM_CONTACTS} from './graphql.operations';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { User } from '../interface/user';
@@ -49,6 +49,15 @@ export class ContactService {
     );
   }
 
+  addToBlackList(id: string){
+    return this.apollo.mutate({
+      mutation: ADD_TO_BLACKLIST,
+      variables: {
+        id
+      }
+    });
+  }
+
   removeFromBlackList(id: string){
     return this.apollo.mutate({
       mutation: REMOVE_FROM_BLACKLIST,
@@ -61,6 +70,15 @@ export class ContactService {
   removeFromContacts(id: string){
     return this.apollo.mutate({
       mutation: REMOVE_FROM_CONTACTS,
+      variables: {
+        id
+      }
+    });
+  }
+
+  acceptInvitation(id: string){
+    return this.apollo.mutate({
+      mutation: ACCEPT_INVITATION,
       variables: {
         id
       }

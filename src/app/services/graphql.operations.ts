@@ -43,6 +43,18 @@ mutation RemoveFromContact($id: Int!) {
 }
 `;
 
+export const ACCEPT_INVITATION = gql`
+mutation AcceptContactInvitation($id: Int!) {
+    acceptContactInvitation(contactId: $id)
+}
+`;
+
+export const ADD_TO_BLACKLIST = gql`
+mutation AddToBlackList($id: Int!) {
+    addToBlackList(contactId: $id)
+}
+`;
+
 export const ADD_TO_CONTACT = gql`
 mutation AddContact($user: Int!, $contact: Int!, $isAccepted: Boolean!, $isBlacklisted: Boolean!) {
     addToContact(contact: { user: $user, contact: $contact, isAccepted: $isAccepted, isBlacklisted: $isBlacklisted }) {

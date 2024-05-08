@@ -43,6 +43,20 @@ export class MyContactsComponent implements OnInit {
     });
   }
 
+  blackListContact(arg0: any) {
+    this.contactService.addToBlackList(arg0).subscribe({
+      next: (response: any) => {
+        this.toastGComponent.openToast('Contact blacklisted successfully!');
+        this.contacts = this.contacts.filter((contact) => contact.id !== arg0);
+      },
+      error: (error: any) => {
+        console.error(error);
+        const errorMessage = error.graphQLErrors[0].message;
+        this.toastComponent.openToast(errorMessage);
+      },
+    });
+    }
+
   removeContact(arg0: any) {
     this.contactService.removeFromContacts(arg0).subscribe({
       next: (response: any) => {

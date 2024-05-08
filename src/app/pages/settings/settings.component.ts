@@ -47,7 +47,6 @@ export class SettingsComponent {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
     this.userService.getUserByToken(this.token).subscribe({
       next: (user: any) => {
-        console.log(user.getUserByToken)
         if(!this.PRODUCTION){
             let userProfileImageUrl = user.getUserByToken.profileImageUrl;
         userProfileImageUrl = userProfileImageUrl.replace(/\\/g, '/'); // remove for production

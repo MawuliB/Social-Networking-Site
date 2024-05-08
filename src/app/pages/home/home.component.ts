@@ -70,8 +70,10 @@ export class HomeComponent implements OnInit {
       }
       },
       error: (error: any) => {
+        this.logout();
         console.error(error);
-        this.errors = error;
+        const errorMessage = error.graphQLErrors[0].message;
+        this.toastComponent.openToast(errorMessage);
       }
     });
     if (storedComponent) {
