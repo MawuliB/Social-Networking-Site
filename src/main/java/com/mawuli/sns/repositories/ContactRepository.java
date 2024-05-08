@@ -12,4 +12,6 @@ public interface ContactRepository extends CrudRepository<Contact, Integer>, Pag
     public List<Contact> findAllByUser(User user);
 
     Optional<Contact> findByUserAndContact(User user, User contactUser);
+
+    List<Contact> findAllByContactAndIsAcceptedFalse(User user);
 }

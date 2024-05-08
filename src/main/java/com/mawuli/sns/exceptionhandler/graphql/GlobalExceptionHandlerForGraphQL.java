@@ -1,6 +1,7 @@
 package com.mawuli.sns.exceptionhandler.graphql;
 
 import graphql.GraphQLError;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.graphql.data.method.annotation.GraphQlExceptionHandler;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,14 @@ public class GlobalExceptionHandlerForGraphQL {
         return GraphQLError
                 .newError()
                 .message(exception.getLocalizedMessage())
+                .build();
+    }
+
+    @GraphQlExceptionHandler(ExpiredJwtException.class)
+    public GraphQLError handleExpiredJwtException(ExpiredJwtException exception) {
+        return GraphQLError
+                .newError()
+                .message("JWT token has expired. Please log in again.")
                 .build();
     }
 

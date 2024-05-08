@@ -2,12 +2,13 @@ type Query {
     getAllUsers: [User]
     getAllContactByContactId(contactId: Int!): [Contact]
     getUserByToken(token: String!): User
+    getInvitationsByUserId(userId: Int!): [Contact]
 }
 
 type Mutation {
     addToBlackList(contactId: Int!): Contact
     removeFromBlackList(contactId: Int!): Boolean
-    acceptContactInvitation(contactId: Int!): Contact
+    acceptContactInvitation(contactId: Int!): Boolean
     addToContact(contact: ContactRequest): Contact
     removeFromContact(contactId: Int!): Boolean
 #    setOrUpdateProfileImageUrl(profileImage: Upload!, id: ID!): String

@@ -28,12 +28,17 @@ public class ContactController {
     }
 
     @MutationMapping
-    Contact acceptContactInvitation(@Argument("contactId") Integer contactId) {
-        return contactService.acceptContactInvitation(contactId);
+    void acceptContactInvitation(@Argument("contactId") Integer contactId) {
+        contactService.acceptContactInvitation(contactId);
     }
 
     @QueryMapping
     List<Contact> getAllContactByContactId(@Argument("contactId") Integer contactId) {
         return contactService.getAllContactByContactId(Long.valueOf(contactId));
+    }
+
+    @QueryMapping
+    List<Contact> getInvitationsByUserId(@Argument("userId") Integer userId) {
+        return contactService.getInvitationsByUserId(Long.valueOf(userId));
     }
 }

@@ -42,7 +42,6 @@ public class ContactService {
 
         return contactRepository.save(contactEntity);
     }
-
     public void removeContactFromContactList(Integer contactId) {
         var contact = contactRepository.findById(contactId);
 
@@ -53,12 +52,12 @@ public class ContactService {
         }
     }
 
-    public Contact acceptContactInvitation(Integer contactId) {
+    public void acceptContactInvitation(Integer contactId) {
         var contact = contactRepository.findById(contactId);
 
         if (contact.isPresent()) {
             contact.get().setIsAccepted(true);
-            return contactRepository.save(contact.get());
+            contactRepository.save(contact.get());
         } else {
             throw new EntityNotFoundException("Contact does not exist");
         }
@@ -83,5 +82,11 @@ public class ContactService {
         contact.setIsBlacklisted(false);
         contactRepository.save(contact);
         return contact;
+    }
+
+    public List<Contact> getInvitationsByUserId(Long userId) {
+        return contactRepository.findAllByContactAndIsAcceptedFalse(userAccessRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId))
+        );
     }
 }
