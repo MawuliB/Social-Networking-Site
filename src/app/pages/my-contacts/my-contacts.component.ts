@@ -70,5 +70,4 @@ export class MyContactsComponent implements OnInit {
       },
     });
     }
-
 }

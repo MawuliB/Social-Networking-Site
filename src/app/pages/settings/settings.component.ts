@@ -252,9 +252,20 @@ export class SettingsComponent {
             } else {
               this.user.profileImageUrl = response;
             }
+            // display a success message
             this.toastGComponent.openToast(
               'Profile picture uploaded successfully'
             );
+            const button = document.getElementById('close-modal');
+            if (button) {
+              button.click();
+            }else{
+              console.error('Modal toggle button not found');
+            }
+
+          // Reset the selectedFile
+          this.selectedFile = null;
+
           },
           error: (error: any) => {
             console.error('Error uploading file', error);
