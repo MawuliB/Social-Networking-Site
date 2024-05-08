@@ -21,8 +21,8 @@ public class BlackListController {
 //    private final String authenticatedUserEmail = authenticatedUser.getName();
 
     @MutationMapping
-    Contact addToBlackList(@Argument("contactId") Integer contactId) {
-        return contactService.addContactToBlackList(contactId);
+    void addToBlackList(@Argument("contactId") Integer contactId) {
+        contactService.addContactToBlackList(contactId);
     }
 
     @MutationMapping

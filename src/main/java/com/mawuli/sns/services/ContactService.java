@@ -30,13 +30,29 @@ public class ContactService {
         User user = contactEntity.getUser();
         User contactUser = contactEntity.getContact();
 
+        if(user.getId().equals(contactUser.getId())){
+            throw new GeneralGraphQLExceptions("You cannot add yourself as a contact");
+        }
+
         Optional<Contact> existingContact = contactRepository.findByUserAndContact(user, contactUser);
+        Optional<Contact> existingContactReverse = contactRepository.findByUserAndContact(contactUser, user);
 
         if (existingContact.isPresent()) {
             if (existingContact.get().getIsBlacklisted()) {
                 throw new GeneralGraphQLExceptions("Contact exists, not allowing connection");
             } else {
                 throw new GeneralGraphQLExceptions("Contact already exists");
+            }
+        }
+
+        if (existingContactReverse.isPresent()) {
+            if (existingContactReverse.get().getIsAccepted()){
+                contactEntity.setIsAccepted(true);
+                contactRepository.save(contactEntity);
+                throw new GeneralGraphQLExceptions("Contact already your friend");
+            } else {
+                existingContactReverse.get().setIsAccepted(true);
+                return contactRepository.save(existingContactReverse.get());
             }
         }
 

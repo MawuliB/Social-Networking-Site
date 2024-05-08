@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("home")
+@RequestMapping("/home")
 @RequiredArgsConstructor
 @Tag(name = "Home Controller", description = "Endpoints for the home page")
 public class HomeController {
@@ -36,10 +36,10 @@ public class HomeController {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    String password1 = "dummyPassword1";
+    String password1 = "dummyPassword1@";
     String encodedPassword1 = passwordEncoder.encode(password1);
 
-    String password2 = "dummyPassword2";
+    String password2 = "dummyPassword2@";
     String encodedPassword2 = passwordEncoder.encode(password2);
 
         @GetMapping("")

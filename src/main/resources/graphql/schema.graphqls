@@ -6,7 +6,7 @@ type Query {
 }
 
 type Mutation {
-    addToBlackList(contactId: Int!): Contact
+    addToBlackList(contactId: Int!): Boolean
     removeFromBlackList(contactId: Int!): Boolean
     acceptContactInvitation(contactId: Int!): Boolean
     addToContact(contact: ContactRequest): Contact

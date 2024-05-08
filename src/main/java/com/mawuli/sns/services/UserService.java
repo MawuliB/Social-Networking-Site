@@ -95,22 +95,6 @@ public class UserService {
         return UserMapper.mapToUserDto(userRepository.save(existingUser));
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
-    }
-
-    public User getUserByUsernameOrEmail(String username, String email) {
-        return userRepository.findByUsernameOrEmail(username, email).orElse(null);
-    }
-
     public List<User> getAllUsers() {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false).toList();
     }
