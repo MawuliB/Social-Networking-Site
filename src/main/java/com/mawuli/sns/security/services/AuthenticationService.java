@@ -71,12 +71,23 @@ public class AuthenticationService {
                     "Email already exists"
             );
         }
+
+        //check if username exists
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(
                     BAD_REQUEST,
                     "Username already exists"
             );
         }
+
+        //check if password is too long
+        if(request.getPassword().length() > 100){
+            throw new ResponseStatusException(
+                    BAD_REQUEST,
+                    "Password too long"
+            );
+        }
+
         //check for a valid password
         if(!validatePassword.isValidPassword(request.getPassword())) {
             throw new ResponseStatusException(
