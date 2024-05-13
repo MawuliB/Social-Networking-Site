@@ -9,5 +9,4 @@ export class MyStompService {
 
   socket = new SockJS('http://localhost:8080/ws');
   stompClient = Stomp.over(this.socket);
-
 }
