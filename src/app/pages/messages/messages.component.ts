@@ -61,6 +61,7 @@ export class MessagesComponent implements OnInit {
         this.connectedUsers = response.filter((user) => {
           return user.id.toString() !== this.id.toString();
         })
+        console.log(this.connectedUsers)
       },
     });
   }
