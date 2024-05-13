@@ -30,11 +30,11 @@
         >
           <div class="flex items-center">
             <div class="relative" *ngIf="contact.status=='ONLINE'">
-                <img class="w-10 h-10 rounded-full" [src]="contact.profilePicture" alt="">
+                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="profile">
                 <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
             </div>
             <div class="relative" *ngIf="contact.status=='OFFLINE'">
-                <img class="w-10 h-10 rounded-full" [src]="contact.profilePicture" alt="">
+                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="profile">
                 <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
             </div>
             <div class="flex-1 min-w-0 ms-4">
@@ -49,7 +49,7 @@
             </div>
             <div class="ml-5"
             [ngClass]="{'inline-flex items-center justify-center w-4 h-4 p-4 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300': contact.newMessageCount > 0}"
-            >{{ contact.newMessageCount }}</div>
+            >{{ contact.newMessageCount > 0 ? contact.newMessageCount: "" }}</div>
             <div
               class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
             >
