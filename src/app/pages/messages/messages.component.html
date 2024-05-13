@@ -1,1 +1,83 @@
-<p class="mt-14">Chat Feature Coming Soon !!!</p>
+<app-toast></app-toast>
+<app-toast-g></app-toast-g>
+<div
+  class="mt-14 w-full max-w-2xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+>
+  <div class="flex items-center mb-4">
+    <div *ngIf="selectedUser">
+        <button
+            class="text-blue-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            (click)="backToContacts()"
+        >
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+    <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+        {{selectedUser ? selectedUser.firstname + ' ' + selectedUser.lastname : 'My Chat'}}
+    </h5>
+  </div>
+  <div *ngIf="selectedUser">
+    <!-- Message display here -->
+  </div>
+  <div *ngIf="!selectedUser">
+  <div class="flow-root">
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+      <ng-container *ngFor="let contact of connectedUsers">
+        <li 
+        class="py-3 sm:py-4 cursor-pointer" 
+        *ngIf="!contact.isBlacklisted" 
+        (click)="userItemClick(contact)"
+        >
+          <div class="flex items-center">
+            <div class="relative" *ngIf="contact.status=='ONLINE'">
+                <img class="w-10 h-10 rounded-full" [src]="contact.profilePicture" alt="">
+                <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+            </div>
+            <div class="relative" *ngIf="contact.status=='OFFLINE'">
+                <img class="w-10 h-10 rounded-full" [src]="contact.profilePicture" alt="">
+                <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+            </div>
+            <div class="flex-1 min-w-0 ms-4">
+              <p
+                class="text-sm font-medium text-gray-900 truncate dark:text-white"
+              >
+                {{ contact.firstname }} {{ contact.lastname }}
+              </p>
+              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                {{ contact.email }}
+              </p>
+            </div>
+            <div class="ml-5"
+            [ngClass]="{'inline-flex items-center justify-center w-4 h-4 p-4 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300': contact.newMessageCount > 0}"
+            >{{ contact.newMessageCount }}</div>
+            <div
+              class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+            >
+            </div>
+            <div
+              class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+            >
+            </div>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>
+<div *ngIf="selectedUser" class="chat-area h-screen">
+    <div #chatArea id="chat-messages">
+      <div *ngFor="let message of messages"
+           class="message"
+           [ngClass]="{ 'sender': message.senderId.toString() === id.toString(), 'receiver': message.senderId.toString() !== id.toString()}"
+           >
+        <p>{{ message.content }}</p>
+      </div>
+    </div>
+    <div class="message-input">
+      <input #messageInput type="text">
+      <button (click)="sendMessage($event)">
+        Send
+      </button>
+    </div>
+  </div>
+</div>

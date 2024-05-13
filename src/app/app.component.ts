@@ -1,8 +1,6 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
-import { FilterPipe } from './services/filter.pipe';
 
 @Component({
   selector: 'app-root',

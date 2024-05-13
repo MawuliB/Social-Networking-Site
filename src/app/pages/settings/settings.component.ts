@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { share } from 'rxjs';
 import { SharedModule } from '../../services/shared.module';
 import { CommonModule } from '@angular/common';
 import {
@@ -86,7 +85,6 @@ export class SettingsComponent {
   }
 
   removeFromBlacklist(arg0: any) {
-    console.log(arg0);
     this.contactService.removeFromBlackList(arg0).subscribe({
       next: (response: any) => {
         this.toastGComponent.openToast('User removed from blacklist');

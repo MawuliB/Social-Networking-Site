@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ToastComponent } from '../toast/toast.component';
 import { SharedModule } from '../../services/shared.module';
 import { ToastGComponent } from '../toast-g/toast-g.component';
+import { MyStompService } from '../../my-stomp.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   apiUrl = environment.API_URL;
 
-  constructor(private route: ActivatedRoute, private router: Router,private http: HttpClient, private fb: FormBuilder) { }
+  constructor(private route: ActivatedRoute, private router: Router,private http: HttpClient, private fb: FormBuilder, private stompService: MyStompService) { }
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],

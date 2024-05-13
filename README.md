@@ -1,27 +1,37 @@
-# Sns
+# Social Networking Site (Java)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+## Project Brief
 
-## Development server
+Social networking has become an integral part of modern communication and socialization. This project aims to address issues such as cyberbullying, privacy concerns, and fake accounts by prioritizing user privacy and safety.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Project Structure
 
-## Code scaffolding
+- **Frontend**: Hosted on [Vercel](https://social-networking-site-blue.vercel.app/). Built with Angular.
+- **Backend**: Built with Spring Boot (Java).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation
 
-## Build
+### Frontend
+Ensure Node and Angular CLI is installed, then run:
+ng serve
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Backend
+Ensure Java SDK is installed. Run the application after pulling from the repository.
 
-## Running unit tests
+## Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **User Stories**:
+  1. As a user, I would like to register so that I can have access to the platform...
+  2. As a user, I would like to log in to the system before performing any action...
+  3. As a user, I would like to have a setting page to manage my profile to ensure my safety on the platform properly...
+  4. As a user, I would like to connect with other platform users for them to become my friends and appear in my contact list...
+  5. As a user, I would like to share content with my contacts to promote a good experience...
 
-## Running end-to-end tests
+## Technologies Used
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Frontend: Angular
+- Backend: Spring Boot (Java)
 
-## Further help
+## License
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+*License information to be provided later.*

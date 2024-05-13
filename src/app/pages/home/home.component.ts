@@ -13,6 +13,8 @@ import { GET_ALL_CONTACTS } from '../../services/graphql.operations';
 import { ContactService } from '../../services/contact.service';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
+import { MyStompService } from '../../my-stomp.service';
+import { GlobalService } from '../../services/global.service';
 
 @Component({
   selector: 'app-home',
@@ -41,7 +43,7 @@ export class HomeComponent implements OnInit {
   errors: any;
   PRODUCTION = environment.production;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private stompService: MyStompService, public globalService: GlobalService) {}
 
   activeComponent = 'find-contacts';
 
@@ -91,6 +93,10 @@ export class HomeComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
+    this.stompService.stompClient.send(`/app/user.disconnectUser`,
+        {},
+        this.user.id
+    );
     window.location.href = '/login';
   }
 }
