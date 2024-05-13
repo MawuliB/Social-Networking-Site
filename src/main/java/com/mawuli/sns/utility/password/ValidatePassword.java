@@ -11,7 +11,7 @@ public class ValidatePassword {
         // Regex to check valid password for a combination of upper, lower, special characters and numbers.
         String regex = "^(?=.*[0-9])"
                 + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
+                + "(?=.*[^a-zA-Z0-9 ])" // This will check for any character that is not a letter, number or space
                 + "(?=\\S+$).{8,}$";
         return password.matches(regex);
     }

@@ -7,7 +7,7 @@ import com.mawuli.sns.exceptionhandler.graphql.EntityNotFoundException;
 import com.mawuli.sns.exceptionhandler.graphql.GeneralGraphQLExceptions;
 import com.mawuli.sns.repositories.ContactRepository;
 import com.mawuli.sns.repositories.UserAccessRepository;
-import com.mawuli.sns.security.domain.user.User;
+import com.mawuli.sns.security.domain.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

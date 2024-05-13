@@ -5,21 +5,20 @@ import com.mawuli.sns.domain.dto.request.UserDto;
 import com.mawuli.sns.exceptionhandler.graphql.EntityNotFoundException;
 import com.mawuli.sns.exceptionhandler.graphql.InvalidOldPasswordException;
 import com.mawuli.sns.exceptionhandler.graphql.UsernameAlreadyExistException;
+import com.mawuli.sns.repositories.ContactRepository;
 import com.mawuli.sns.repositories.UserAccessRepository;
-import com.mawuli.sns.security.domain.user.User;
+import com.mawuli.sns.security.domain.entities.Status;
+import com.mawuli.sns.security.domain.entities.User;
 import com.mawuli.sns.security.services.JwtService;
 import com.mawuli.sns.utility.cloudinary.CloudinaryService;
 import com.mawuli.sns.utility.fileUpload.FileStorageService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,7 +29,6 @@ import java.util.*;
 import java.util.stream.StreamSupport;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +37,7 @@ public class UserService {
     private final UserAccessRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileStorageService fileStorageService;
+    private final ContactRepository contactRepository;
 
     private final JwtService jwtService;
 
@@ -174,5 +173,36 @@ public class UserService {
         Map<String, Object> claims = jwtService.decodeToken(token);
         Long id = Long.valueOf((Integer) claims.get("id"));
         return UserMapper.mapToUserDto(Objects.requireNonNull(userRepository.findById(id).orElse(null)));
+    }
+
+    public UserDto loginUser(Long id) {
+        var user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setStatus(Status.ONLINE);
+            userRepository.save(user);
+        }
+        return UserMapper.mapToUserDto(user);
+    }
+
+    public void disconnectUser(Long id) {
+        var savedUser = userRepository.findById(id).orElse(null);
+        if (savedUser != null) {
+            savedUser.setStatus(Status.OFFLINE);
+            userRepository.save(savedUser);
+        }
+    }
+
+    public List<UserDto> findConnectedUsers() {
+        return UserMapper.mapToUserDtoList(userRepository.findAllByStatus(Status.ONLINE));
+    }
+
+    //return contact column from a list of contacts
+    public List<UserDto> findConnectedUsers(Long id) {
+        var contacts = contactRepository.findAllByUser(userRepository.findById(id).orElse(null));
+        List<UserDto> connectedUsers = new ArrayList<>();
+        for (var contact : contacts) {
+                connectedUsers.add(UserMapper.mapToUserDto(contact.getContact()));
+        }
+        return connectedUsers;
     }
 }

@@ -1,6 +1,6 @@
 package com.mawuli.sns;
 
-import com.mawuli.sns.security.domain.role.Role;
+import com.mawuli.sns.security.domain.entities.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

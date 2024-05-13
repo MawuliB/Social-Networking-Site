@@ -3,7 +3,6 @@ package com.mawuli.sns.domain.dto.mappers;
 import com.mawuli.sns.domain.dto.request.ContactDto;
 import com.mawuli.sns.domain.entities.Contact;
 import com.mawuli.sns.exceptionhandler.graphql.EntityNotFoundException;
-import com.mawuli.sns.security.domain.user.User;
 import com.mawuli.sns.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

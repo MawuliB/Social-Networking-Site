@@ -1,6 +1,6 @@
 package com.mawuli.sns.domain.entities;
 
-import com.mawuli.sns.security.domain.user.User;
+import com.mawuli.sns.security.domain.entities.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

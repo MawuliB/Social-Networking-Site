@@ -6,9 +6,10 @@ import com.mawuli.sns.security.domain.dto.request.AuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.request.OAuthAuthenticationRequest;
 import com.mawuli.sns.security.domain.dto.response.AuthenticationResponse;
 import com.mawuli.sns.security.domain.dto.request.RegistrationRequest;
-import com.mawuli.sns.security.domain.user.RefreshToken;
-import com.mawuli.sns.security.domain.user.Token;
-import com.mawuli.sns.security.domain.user.User;
+import com.mawuli.sns.security.domain.entities.RefreshToken;
+import com.mawuli.sns.security.domain.entities.Status;
+import com.mawuli.sns.security.domain.entities.Token;
+import com.mawuli.sns.security.domain.entities.User;
 import com.mawuli.sns.security.repositories.RefreshTokenRepository;
 import com.mawuli.sns.security.repositories.RoleRepository;
 import com.mawuli.sns.security.repositories.TokenRepository;
@@ -94,6 +95,8 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .loginType("normal")
+                .status(Status.OFFLINE)
+                .newMessageCount(0)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .accountLocked(false)
                 .enabled(false)

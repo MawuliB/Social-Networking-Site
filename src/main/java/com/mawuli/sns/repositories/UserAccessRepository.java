@@ -1,6 +1,7 @@
 package com.mawuli.sns.repositories;
 
-import com.mawuli.sns.security.domain.user.User;
+import com.mawuli.sns.security.domain.entities.Status;
+import com.mawuli.sns.security.domain.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -14,4 +15,5 @@ public interface UserAccessRepository extends CrudRepository<User, Long>, Paging
     Optional<User>  findByUsernameOrEmail(String username, String email);
     List<User> findByUsernameContainsIgnoreCaseOrEmailContainsIgnoreCase(String username, String email);
 
+    List<User> findAllByStatus(Status status);
 }

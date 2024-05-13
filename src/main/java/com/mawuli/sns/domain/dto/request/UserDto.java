@@ -1,5 +1,6 @@
 package com.mawuli.sns.domain.dto.request;
 
+import com.mawuli.sns.security.domain.entities.Status;
 import lombok.Builder;
 
 @Builder
@@ -10,6 +11,8 @@ public record UserDto(
         String username,
         String email,
         String profileImageUrl,
-        String profileImageId
+        String profileImageId,
+        Status status,
+        Integer newMessageCount
 ) {
 }

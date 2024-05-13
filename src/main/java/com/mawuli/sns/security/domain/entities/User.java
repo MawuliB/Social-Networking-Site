@@ -1,6 +1,5 @@
-package com.mawuli.sns.security.domain.user;
+package com.mawuli.sns.security.domain.entities;
 
-import com.mawuli.sns.security.domain.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +47,10 @@ public class User implements UserDetails, Principal {
     private boolean enabled;
 
     private String loginType;
+
+    private Status status;
+
+    private Integer newMessageCount;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;

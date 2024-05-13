@@ -79,7 +79,13 @@ public class SecurityConfig {
                                 "/graphiql/**",
                                 "/login",
                                 "/public/**",
-                                "oauth2/**"
+                                "oauth2/**",
+                                "/ws/**",
+                                "/ws",
+                                "/users",
+                                "/frontend",
+                                "/frontend/**",
+                                "/messages/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

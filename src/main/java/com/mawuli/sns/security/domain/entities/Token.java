@@ -1,4 +1,4 @@
-package com.mawuli.sns.security.domain.user;
+package com.mawuli.sns.security.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
