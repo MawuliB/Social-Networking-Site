@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { GET_USER_BY_TOKEN, UPDATE_USER, UPDATE_USER_PASSWORD } from './graphql.operations';
-import { User, UserUpdateRequest } from '../interface/user';
+import { UserUpdateRequest } from '../interface/user';
 import { catchError, map, Observable, switchMap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  url = environment.API_URL
 
-  constructor(private apollo: Apollo) { }
+  constructor(private apollo: Apollo, private http: HttpClient) { }
 
   getUserByToken(token: string): Observable<any> {
     const query = this.apollo.watchQuery<{ getUserByToken: any }>({
@@ -47,4 +50,9 @@ export class UserService {
       }
     });
 }
+
+getConnectedUsers(id: number): Observable<any> {
+  return this.http.get(`${this.url}/users`, { params: { id: id.toString() } });
+}
+
 }

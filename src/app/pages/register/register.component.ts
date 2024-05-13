@@ -83,7 +83,7 @@ export class RegisterComponent {
         },
         error: (error: any) => {
           console.log(error.error);
-          this.toastComponent.openToast(error.error.validationErrors[0]);
+          this.toastComponent.openToast(error.error.error);
         }
       });
     } else {

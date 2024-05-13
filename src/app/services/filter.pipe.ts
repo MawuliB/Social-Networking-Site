@@ -7,9 +7,9 @@ export class FilterPipe implements PipeTransform {
   transform(items: any[], searchTerm: string): any[] {
     if (!items) return [];
     if (!searchTerm) return items;
-
-    searchTerm = searchTerm.toLowerCase();
-
+  
+    searchTerm = searchTerm.toLowerCase().trim();
+  
     return items.filter(it => {
       return it.email.toLowerCase().includes(searchTerm) || it.username.toLowerCase().includes(searchTerm);
     });

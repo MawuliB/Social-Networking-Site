@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { share } from 'rxjs';
 import { SharedModule } from '../../services/shared.module';
 import { CommonModule } from '@angular/common';
 import {
@@ -86,7 +85,6 @@ export class SettingsComponent {
   }
 
   removeFromBlacklist(arg0: any) {
-    console.log(arg0);
     this.contactService.removeFromBlackList(arg0).subscribe({
       next: (response: any) => {
         this.toastGComponent.openToast('User removed from blacklist');
@@ -252,9 +250,20 @@ export class SettingsComponent {
             } else {
               this.user.profileImageUrl = response;
             }
+            // display a success message
             this.toastGComponent.openToast(
               'Profile picture uploaded successfully'
             );
+            const button = document.getElementById('close-modal');
+            if (button) {
+              button.click();
+            }else{
+              console.error('Modal toggle button not found');
+            }
+
+          // Reset the selectedFile
+          this.selectedFile = null;
+
           },
           error: (error: any) => {
             console.error('Error uploading file', error);
