@@ -22,6 +22,7 @@ export class FindContactsComponent implements OnInit {
   contacts: any[] = [];
   errors: any;
   searchTerm = '';
+  loading = false
 
   constructor(private contactService: ContactService) {}
 
@@ -43,6 +44,8 @@ export class FindContactsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true
+    try{
     this.contactService.getAllContacts().subscribe({
       next: (contacts: User[]) => {
         this.contacts = contacts;
@@ -52,5 +55,8 @@ export class FindContactsComponent implements OnInit {
         this.errors = error;
       },
     });
+  } finally {
+    this.loading = false
+  }
   }
 }
