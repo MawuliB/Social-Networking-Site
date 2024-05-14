@@ -52,34 +52,36 @@ export class MessagesComponent implements OnInit {
   }
 
   async findAndDisplayConnectedUsers() {
+    this.loading = true;
+    console.log("Loading ", this.loading);
     this.stompService.stompClient.connect(
       {},
       () => this.onConnected(),
       () => this.onError()
     );
     console.log(this.stompService.stompClient.connected);
-    this.loading = true
-    try{
     this.userService.getConnectedUsers(this.id).subscribe({
       next: (response: any[]) => {
         const updatedUsers = response.filter((user) => {
           return user.id.toString() !== this.id.toString();
         });
-    
+  
         this.connectedUsers = updatedUsers.map((user) => {
           const existingUser = this.connectedUsers.find(
             (connectedUser) => connectedUser.id === user.id
           );
-    
+  
           return existingUser
             ? { ...user, newMessageCount: existingUser.newMessageCount || 0 }
             : { ...user, newMessageCount: 0 };
         });
+        this.loading = false;
       },
+      error: (error) => {
+        console.error('An error occurred:', error);
+        this.loading = false;
+      }
     });
-  } finally {
-    this.loading = false;
-  }
   }
 
   onError():
@@ -128,14 +130,14 @@ export class MessagesComponent implements OnInit {
         );
         this.chatArea.nativeElement.scrollTop =
           this.chatArea.nativeElement.scrollHeight;
-          this.setNewMessageCountToZero();
+        this.setNewMessageCountToZero();
       } else {
         console.error('User chat response is undefined');
       }
     } catch (error) {
       console.error('An error occurred:', error);
     } finally {
-this.loading = false;
+      this.loading = false;
     }
   }
 

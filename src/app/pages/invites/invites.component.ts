@@ -28,20 +28,18 @@ export class InvitesComponent implements OnInit{
 
   getInvitationsById() {
     this.loading = true;
-    try{
     this.contactService.getInvitations(this.user.id).subscribe({
       next: (invite: any[]) => {
         this.invites = invite;
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         const errorMessage = error.graphQLErrors[0].message;
         this.toastComponent.openToast(errorMessage);
+        this.loading = false;
       },
     });
-  } finally {
-    this.loading = false;
-  }
   }
 
   removeContact(arg0: any) {

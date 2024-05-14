@@ -67,7 +67,6 @@ export class RegisterComponent {
     const lastNameControl = this.registerForm.get('lastname');
     const usernameControl = this.registerForm.get('username');
 this.loading = true
-    try{
   
     if (lastNameControl?.valid && usernameControl?.valid && emailControl?.valid && passwordControl?.valid) {
       const body = {
@@ -83,18 +82,19 @@ this.loading = true
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 5000);
+            this.loading = false
         },
         error: (error: any) => {
           console.log(error.error);
           this.toastComponent.openToast(error.error.error);
+          this.loading = false
         }
       });
     } else {
       this.toastComponent.openToast('Fill in all fields correctly');
+      this.loading = false
     }
-  }finally {
-    this.loading = false
-  }
+  
   }
 
   get email() { return this.registerForm.get('email'); }

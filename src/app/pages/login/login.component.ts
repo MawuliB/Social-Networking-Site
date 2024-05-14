@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
     const emailControl = this.loginForm.get('email');
     const passwordControl = this.loginForm.get('password');
     this.loading = true
-      try{
   
     if (emailControl?.valid && passwordControl?.valid) {
       const body = {
@@ -82,21 +81,21 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('refreshToken', refreshToken);
             localStorage.setItem('user', JSON.stringify(user));
             this.toastGComponent.openToast('Login successful');
+            this.loading = false
             this.router.navigate(['/home']);
           }
         },
         error: (error: any) => {
           console.log(error.error);
           this.toastComponent.openToast(error.error.error);
+          this.loading = false
         }
       });
     
       } else {
       this.toastComponent.openToast('Invalid email or password');
+      this.loading = false
     }
-  } finally {
-    this.loading = false
-  }
   }
 
   get email() { return this.loginForm.get('email'); }
