@@ -87,6 +87,7 @@ this.loading = true
         error: (error: any) => {
           console.log(error.error);
           this.toastComponent.openToast(error.error.error);
+          this.loading = false
         }
       });
     } else {
