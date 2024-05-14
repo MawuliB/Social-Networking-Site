@@ -19,6 +19,8 @@ export class MyContactsComponent implements OnInit {
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
 
+  loading = false
+
   contacts: any[] = [];
   errors: any;
   API_URL = environment.API_URL;
@@ -31,6 +33,8 @@ export class MyContactsComponent implements OnInit {
   }
 
   getContactsById() {
+    this.loading = true
+    try{
     this.contactService.getAllContactByContactId(this.user.id).subscribe({
       next: (newContacts: any[]) => {
         this.contacts = newContacts;
@@ -41,6 +45,9 @@ export class MyContactsComponent implements OnInit {
         this.toastComponent.openToast(errorMessage);
       },
     });
+  } finally {
+this.loading = false
+  }
   }
 
   blackListContact(arg0: any) {

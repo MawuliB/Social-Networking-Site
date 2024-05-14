@@ -16,10 +16,7 @@
         {{selectedUser ? selectedUser.firstname + ' ' + selectedUser.lastname : 'My Chat'}}
     </h5>
   </div>
-  <div *ngIf="selectedUser">
-    <!-- Message display here -->
-  </div>
-  <div *ngIf="!selectedUser">
+  <div *ngIf="!selectedUser && !loading">
   <div class="flow-root">
     <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-4">
       <ng-container *ngFor="let contact of connectedUsers">
@@ -27,14 +24,17 @@
         class="py-3 sm:py-4 cursor-pointer" 
         *ngIf="!contact.isBlacklisted" 
         (click)="userItemClick(contact)"
+        (keydown)="onKeyDown($event)"
+        (keyup)="onKeyUp($event)"
+        (keypress)="onKeyPress($event)"
         >
           <div class="flex items-center">
             <div class="relative" *ngIf="contact.status=='ONLINE'">
-                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="profile">
+                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="(((+)))">
                 <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
             </div>
             <div class="relative" *ngIf="contact.status=='OFFLINE'">
-                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="profile">
+                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="(((-)))">
                 <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
             </div>
             <div class="flex-1 min-w-0 ms-4">
@@ -64,7 +64,48 @@
     </ul>
   </div>
 </div>
-<div *ngIf="selectedUser" class="chat-area h-screen">
+
+<!-- Loading Skeleton -->
+<div *ngIf="loading" class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+    <div class="flex items-center justify-between">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+        <div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+        </div>
+        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <span class="sr-only">Loading...</span>
+</div>
+
+<div *ngIf="selectedUser && !loading" class="chat-area h-screen">
     <div #chatArea id="chat-messages">
       <div *ngFor="let message of messages"
            class="message"

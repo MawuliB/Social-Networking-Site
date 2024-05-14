@@ -18,6 +18,7 @@ export class InvitesComponent implements OnInit{
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
   invites: any[] = [];
+  loading = false
 
   constructor(private contactService: ContactService) {}
 
@@ -26,6 +27,8 @@ export class InvitesComponent implements OnInit{
   }
 
   getInvitationsById() {
+    this.loading = true;
+    try{
     this.contactService.getInvitations(this.user.id).subscribe({
       next: (invite: any[]) => {
         this.invites = invite;
@@ -36,6 +39,9 @@ export class InvitesComponent implements OnInit{
         this.toastComponent.openToast(errorMessage);
       },
     });
+  } finally {
+    this.loading = false;
+  }
   }
 
   removeContact(arg0: any) {

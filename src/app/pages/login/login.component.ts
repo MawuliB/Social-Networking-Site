@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
 
   apiUrl = environment.API_URL;
 
+  loading = false;
+
   constructor(private route: ActivatedRoute, private router: Router,private http: HttpClient, private fb: FormBuilder, private stompService: MyStompService) { }
 
   loginForm = this.fb.group({
@@ -60,12 +62,15 @@ export class LoginComponent implements OnInit {
   login(email: string, password: string): void {
     const emailControl = this.loginForm.get('email');
     const passwordControl = this.loginForm.get('password');
+    this.loading = true
+      try{
   
     if (emailControl?.valid && passwordControl?.valid) {
       const body = {
         email: email,
         password: password
       }
+      
       this.http.post(`${this.apiUrl}/auth/authenticate`, body).subscribe({
         next: (response: any) => {
           const token = response['token'];
@@ -85,9 +90,13 @@ export class LoginComponent implements OnInit {
           this.toastComponent.openToast(error.error.error);
         }
       });
-    } else {
+    
+      } else {
       this.toastComponent.openToast('Invalid email or password');
     }
+  } finally {
+    this.loading = false
+  }
   }
 
   get email() { return this.loginForm.get('email'); }

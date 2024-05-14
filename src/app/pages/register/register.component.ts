@@ -20,6 +20,7 @@ export class RegisterComponent {
       @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
 
   apiUrl = environment.API_URL;
+  loading = false
 
   constructor(private route: ActivatedRoute, private router: Router,private http: HttpClient, private fb: FormBuilder) { }
 
@@ -65,6 +66,8 @@ export class RegisterComponent {
     const firstNameControl = this.registerForm.get('firstname');
     const lastNameControl = this.registerForm.get('lastname');
     const usernameControl = this.registerForm.get('username');
+this.loading = true
+    try{
   
     if (lastNameControl?.valid && usernameControl?.valid && emailControl?.valid && passwordControl?.valid) {
       const body = {
@@ -89,6 +92,9 @@ export class RegisterComponent {
     } else {
       this.toastComponent.openToast('Fill in all fields correctly');
     }
+  }finally {
+    this.loading = false
+  }
   }
 
   get email() { return this.registerForm.get('email'); }

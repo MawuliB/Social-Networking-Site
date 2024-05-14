@@ -24,6 +24,8 @@ export class MessagesComponent implements OnInit {
   @ViewChild('chatArea', { static: false }) chatArea!: ElementRef;
   @ViewChild('messageInput', { static: false }) messageInput!: ElementRef;
 
+  loading = false;
+
   user = JSON.parse(localStorage.getItem('user') || '{}');
   receivedMessages: string[] = [];
   connectedUsers: any[] = [];
@@ -56,6 +58,8 @@ export class MessagesComponent implements OnInit {
       () => this.onError()
     );
     console.log(this.stompService.stompClient.connected);
+    this.loading = true
+    try{
     this.userService.getConnectedUsers(this.id).subscribe({
       next: (response: any[]) => {
         const updatedUsers = response.filter((user) => {
@@ -73,6 +77,9 @@ export class MessagesComponent implements OnInit {
         });
       },
     });
+  } finally {
+    this.loading = false;
+  }
   }
 
   onError():
@@ -108,6 +115,7 @@ export class MessagesComponent implements OnInit {
   }
 
   async fetchAndDisplayUserChat() {
+    this.loading = true;
     try {
       const userChatResponse = await this.http
         .get<any>(`${this.url}/messages/${this.id}/${this.selectedUser.id}`)
@@ -126,6 +134,8 @@ export class MessagesComponent implements OnInit {
       }
     } catch (error) {
       console.error('An error occurred:', error);
+    } finally {
+this.loading = false;
     }
   }
 
@@ -208,5 +218,17 @@ export class MessagesComponent implements OnInit {
 
   setNewMessageCountToZero(){
     this.globalService.totalNewMessageCount = 0;
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    // Handle keydown event
+  }
+  
+  onKeyUp(event: KeyboardEvent) {
+    // Handle keyup event
+  }
+  
+  onKeyPress(event: KeyboardEvent) {
+    // Handle keypress event
   }
 }

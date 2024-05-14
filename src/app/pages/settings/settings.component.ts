@@ -26,7 +26,7 @@ export class SettingsComponent {
   @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
-  token = localStorage.getItem('token') || '';
+  token = localStorage.getItem('token') ?? '';
 
   blacklist: any[] = [];
   errors: any;
