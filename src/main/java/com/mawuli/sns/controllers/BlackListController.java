@@ -17,8 +17,6 @@ import org.springframework.stereotype.Controller;
 public class BlackListController {
 
     private final ContactService contactService;
-    private final Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
-//    private final String authenticatedUserEmail = authenticatedUser.getName();
 
     @MutationMapping
     void addToBlackList(@Argument("contactId") Integer contactId) {

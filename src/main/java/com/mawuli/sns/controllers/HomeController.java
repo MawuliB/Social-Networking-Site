@@ -30,8 +30,6 @@ import java.util.Map;
 public class HomeController {
 
     private final JwtService jwtService;
-    private final TestService testService;
-    private final CloudinaryService cloudinaryService;
     private final UserService userService;
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

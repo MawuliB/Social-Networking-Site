@@ -152,7 +152,6 @@ public class AuthenticationService {
                 )
         );
         var claims = new HashMap<String, Object>();
-        log.error("auth: {}", auth.getPrincipal());
         var user = (User) auth.getPrincipal();
         claims.put("id", user.getId());
         claims.put("fullname", user.getFullName());

@@ -37,8 +37,7 @@ public class CloudinaryService {
 
     public CloudinaryService() {
         try {
-            log.error("CloudinaryService Url: {}", url);
-            cloudinary = new Cloudinary("url");
+            cloudinary = new Cloudinary("cloudinary://932645885612349:yY0N7jInhrmuAmKwH9IUul8lM8U@dlzewc2k7");
         } catch (Exception e) {
             CloudinaryService.log.error("Error creating CloudinaryService: {}", e.getMessage());
         }

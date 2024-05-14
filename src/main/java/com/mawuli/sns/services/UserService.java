@@ -33,7 +33,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private static final Logger log = LoggerFactory.getLogger(CloudinaryService.class);
+
     private final UserAccessRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileStorageService fileStorageService;
@@ -103,8 +103,6 @@ public class UserService {
         if (user == null) {
             throw new EntityNotFoundException("User not found");
         }
-
-        log.error("Old password: {}", oldPassword);
 
         if(!passwordEncoder.matches(oldPassword, user.getPassword())) { // check if old password is correct
             throw new InvalidOldPasswordException(BAD_REQUEST, "Old password is incorrect");

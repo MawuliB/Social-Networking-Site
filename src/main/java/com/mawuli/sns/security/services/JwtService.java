@@ -41,7 +41,6 @@ public class JwtService {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
-        log.error("Authorities: {}", authorities);
 
         return Jwts.builder()
                 .setClaims(extraClaims)
