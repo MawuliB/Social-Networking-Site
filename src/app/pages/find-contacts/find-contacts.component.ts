@@ -44,19 +44,17 @@ export class FindContactsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading = true
-    try{
+    this.loading = true;
     this.contactService.getAllContacts().subscribe({
       next: (contacts: User[]) => {
         this.contacts = contacts;
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         this.errors = error;
+        this.loading = false;
       },
     });
-  } finally {
-    this.loading = false
-  }
   }
 }

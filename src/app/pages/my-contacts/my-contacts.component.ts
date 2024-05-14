@@ -33,21 +33,19 @@ export class MyContactsComponent implements OnInit {
   }
 
   getContactsById() {
-    this.loading = true
-    try{
+    this.loading = true;
     this.contactService.getAllContactByContactId(this.user.id).subscribe({
       next: (newContacts: any[]) => {
         this.contacts = newContacts;
+        this.loading = false;
       },
       error: (error: any) => {
         console.error(error);
         const errorMessage = error.graphQLErrors[0].message;
         this.toastComponent.openToast(errorMessage);
+        this.loading = false;
       },
     });
-  } finally {
-this.loading = false
-  }
   }
 
   blackListContact(arg0: any) {
