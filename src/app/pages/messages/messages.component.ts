@@ -58,10 +58,19 @@ export class MessagesComponent implements OnInit {
     console.log(this.stompService.stompClient.connected);
     this.userService.getConnectedUsers(this.id).subscribe({
       next: (response: any[]) => {
-        this.connectedUsers = response.filter((user) => {
+        const updatedUsers = response.filter((user) => {
           return user.id.toString() !== this.id.toString();
-        })
-        console.log(this.connectedUsers)
+        });
+    
+        this.connectedUsers = updatedUsers.map((user) => {
+          const existingUser = this.connectedUsers.find(
+            (connectedUser) => connectedUser.id === user.id
+          );
+    
+          return existingUser
+            ? { ...user, newMessageCount: existingUser.newMessageCount || 0 }
+            : { ...user, newMessageCount: 0 };
+        });
       },
     });
   }
@@ -94,6 +103,7 @@ export class MessagesComponent implements OnInit {
   }
 
   displayMessage(senderId: string, content: string) {
+    this.setNewMessageCountToZero()
     this.messages.push({ senderId, content });
   }
 
@@ -143,14 +153,22 @@ export class MessagesComponent implements OnInit {
 
   userItemClick(user: any) {
     this.selectedUser = user;
+    // Reset the newMessageCount for the selected user
+    if (this.selectedUser.newMessageCount) {
+      this.selectedUser.newMessageCount = 0;
+    }
     this.fetchAndDisplayUserChat();
   }
-
+  
   async backToContacts() {
-    await this.fetchAndDisplayUserChat()
+    // Reset the newMessageCount for the selected user
+    if (this.selectedUser && this.selectedUser.newMessageCount) {
+      this.selectedUser.newMessageCount = 0;
+    }
+    await this.fetchAndDisplayUserChat();
     this.messages = [];
     this.selectedUser = null;
-    this.findAndDisplayConnectedUsers()
+    this.findAndDisplayConnectedUsers();
   }
 
   async onMessageReceived(payload: any) {
@@ -160,13 +178,28 @@ export class MessagesComponent implements OnInit {
     if (
       this.selectedUser && this.selectedUser.id && message && message.senderId &&
       this.selectedUser.id.toString() === message.senderId.toString()
-    ) {
-      
-   this.incrementNewMessageCount()
+    ) { // Check if the message is for the selected user and display it
       this.displayMessage(message.senderId, message.content);
       this.chatArea.nativeElement.scrollTop =
         this.chatArea.nativeElement.scrollHeight;
     }
+
+    if (
+      this.connectedUsers &&
+      this.connectedUsers.length &&
+      this.connectedUsers.some(
+        (user) => user && message && message.senderId && user.id.toString() === message.senderId.toString()
+      )
+    ) {
+      this.incrementNewMessageCount();
+      const user = this.connectedUsers.find(
+        (user) => user && message && message.senderId && user.id.toString() === message.senderId.toString()
+      );
+      if (user) {
+        user.newMessageCount++;
+      }
+    }
+
   }
 
   incrementNewMessageCount() {
