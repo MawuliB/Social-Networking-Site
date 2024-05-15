@@ -18,6 +18,9 @@ ng serve
 ### Backend
 Ensure Java SDK is installed. Run the application after pulling from the repository.
 
+## Entity Relation Diagram
+![ERD](erd.png)
+
 ## Usage
 
 - **User Stories**:
@@ -34,4 +37,4 @@ Ensure Java SDK is installed. Run the application after pulling from the reposit
 
 ## License
 
-*License information to be provided later.*
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/MawuliB/Social-Networking-Site/blob/frontend-prod/LICENSE.md) file for details
