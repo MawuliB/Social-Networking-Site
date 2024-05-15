@@ -7,7 +7,7 @@ query GetAllUsers {
         firstname
         lastname
         email
-        username
+        alias
         profileImageUrl
     }
 }
@@ -24,7 +24,7 @@ query GetAllContactByContactId($contactId: Int!) {
             firstname
             lastname
             email
-            username
+            alias
             profileImageUrl
         }
     }
@@ -63,7 +63,7 @@ mutation AddContact($user: Int!, $contact: Int!, $isAccepted: Boolean!, $isBlack
             firstname
             lastname
             email
-            username
+            alias
             profileImageUrl
         }
         isAccepted
@@ -79,7 +79,7 @@ mutation UpdateUser($id: ID!, $user: UserUpdateRequest!) {
         firstname
         lastname
         email
-        username
+        alias
         profileImageUrl
     }
 }
@@ -99,7 +99,7 @@ query GetUserByToken($token: String!) {
         firstname
         lastname
         email
-        username
+        alias
         profileImageUrl
     }
 }
@@ -116,7 +116,7 @@ query GetInvitationsUserId($userId: Int!) {
             firstname
             lastname
             email
-            username
+            alias
             profileImageUrl
         }
     }

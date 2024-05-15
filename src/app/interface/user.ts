@@ -3,7 +3,7 @@ export interface User {
     firstname: String
     lastname: String
     email: String
-    username: String
+    alias: String
     profileImageUrl: String
     profileImageId: String
     enabled: Boolean
@@ -15,5 +15,5 @@ export interface User {
 export interface UserUpdateRequest {
     firstname: String
     lastname: String
-    username: String
+    alias: String
 }
