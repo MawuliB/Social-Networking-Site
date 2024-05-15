@@ -53,7 +53,6 @@ export class MessagesComponent implements OnInit {
 
   async findAndDisplayConnectedUsers() {
     this.loading = true;
-    console.log("Loading ", this.loading);
     this.stompService.stompClient.connect(
       {},
       () => this.onConnected(),
@@ -185,7 +184,6 @@ export class MessagesComponent implements OnInit {
 
   async onMessageReceived(payload: any) {
     this.findAndDisplayConnectedUsers();
-    console.log('Message received', payload.body);
     const message = JSON.parse(payload.body);
     if (
       this.selectedUser && this.selectedUser.id && message && message.senderId &&

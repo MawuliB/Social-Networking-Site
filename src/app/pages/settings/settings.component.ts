@@ -70,7 +70,7 @@ export class SettingsComponent {
     this.editProfileForm.setValue({
       firstname: this.user.firstname,
       lastname: this.user.lastname,
-      username: this.user.username,
+      alias: this.user.alias,
     });
 
     this.contactService.getAllContactByContactId(this.user.id).subscribe({
@@ -100,7 +100,7 @@ export class SettingsComponent {
   editProfileForm = this.fb.group({
     firstname: [this.user.firstname, Validators.required],
     lastname: [this.user.lastname],
-    username: [this.user.username, Validators.required],
+    alias: [this.user.alias, Validators.required],
   });
 
   // change User password
@@ -110,18 +110,17 @@ export class SettingsComponent {
     confirmPassword: ['', Validators.required],
   });
 
-  onSubmit() {
+  onSubmit() { // update user details
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
 
     if (this.editProfileForm.valid) {
-      const { firstname, lastname, username } = this.editProfileForm.value;
-      if (firstname && username) {
+      const { firstname, lastname, alias } = this.editProfileForm.value;
+      if (firstname && alias) {
         if (this.user && this.user.id) {
           this.userService
-            .updateUser(this.user.id, { firstname, lastname, username })
+            .updateUser(this.user.id, { firstname, lastname, alias })
             .subscribe({
               next: (userData: any) => {
-                console.log(userData.updateUser);
                 localStorage.setItem(
                   'user',
                   JSON.stringify(userData.updateUser)
@@ -184,15 +183,12 @@ export class SettingsComponent {
             });
         } else {
           this.toastComponent.openToast('User not found');
-          console.error('User not found');
         }
       } else {
         this.toastComponent.openToast('Passwords do not match');
-        console.error('Passwords do not match');
       }
     } else {
       this.toastComponent.openToast('Form is invalid');
-      console.error('Form is invalid');
     }
   }
 
@@ -270,7 +266,7 @@ export class SettingsComponent {
           },
         });
     } else {
-      console.error('No file selected');
+      this.toastComponent.openToast('No file selected');
     }
   }
 
@@ -314,7 +310,7 @@ export class SettingsComponent {
     return this.editProfileForm.get('lastname');
   }
 
-  get username() {
-    return this.editProfileForm.get('username');
+  get alias() {
+    return this.editProfileForm.get('alias');
   }
 }
