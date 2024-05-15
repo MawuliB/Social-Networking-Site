@@ -25,6 +25,7 @@ export class MessagesComponent implements OnInit {
   @ViewChild('messageInput', { static: false }) messageInput!: ElementRef;
 
   loading = false;
+  loadingForUsers = false
 
   user = JSON.parse(localStorage.getItem('user') || '{}');
   receivedMessages: string[] = [];
@@ -48,11 +49,11 @@ export class MessagesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.findAndDisplayConnectedUsers();
+    this.findAndDisplayConnectedUsers(true);
   }
 
-  async findAndDisplayConnectedUsers() {
-    this.loading = true;
+  findAndDisplayConnectedUsers(shouldLoad: boolean) {
+    this.loadingForUsers = shouldLoad? true : false;
     this.stompService.stompClient.connect(
       {},
       () => this.onConnected(),
@@ -74,11 +75,11 @@ export class MessagesComponent implements OnInit {
             ? { ...user, newMessageCount: existingUser.newMessageCount || 0 }
             : { ...user, newMessageCount: 0 };
         });
-        this.loading = false;
+        this.loadingForUsers = false;
       },
       error: (error) => {
         console.error('An error occurred:', error);
-        this.loading = false;
+        this.loadingForUsers = false;
       }
     });
   }
@@ -175,15 +176,31 @@ export class MessagesComponent implements OnInit {
     // Reset the newMessageCount for the selected user
     if (this.selectedUser && this.selectedUser.newMessageCount) {
       this.selectedUser.newMessageCount = 0;
+      console.log(this.selectedUser);
     }
-    await this.fetchAndDisplayUserChat();
+
+    if (
+      this.connectedUsers &&
+      this.connectedUsers.length &&
+      this.connectedUsers.some(
+        (user) => user && this.selectedUser && user.id.toString() === this.selectedUser.id.toString()
+      )
+    ) {
+      const user = this.connectedUsers.find(
+        (user) => user && this.selectedUser && user.id.toString() === this.selectedUser.id.toString()
+      );
+      if (user) {
+        user.newMessageCount = 0;
+      }
+    }
+
     this.messages = [];
     this.selectedUser = null;
-    this.findAndDisplayConnectedUsers();
+    this.findAndDisplayConnectedUsers(true);
   }
 
   async onMessageReceived(payload: any) {
-    this.findAndDisplayConnectedUsers();
+    this.findAndDisplayConnectedUsers(false);
     const message = JSON.parse(payload.body);
     if (
       this.selectedUser && this.selectedUser.id && message && message.senderId &&
