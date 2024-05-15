@@ -58,6 +58,7 @@ public class ContactService {
 
         return contactRepository.save(contactEntity);
     }
+
     public void removeContactFromContactList(Integer contactId) {
         var contact = contactRepository.findById(contactId);
 
