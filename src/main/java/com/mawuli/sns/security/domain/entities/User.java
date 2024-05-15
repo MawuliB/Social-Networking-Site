@@ -35,7 +35,7 @@ public class User implements UserDetails, Principal {
     private String email;
 
     @Column(unique = true)
-    private String username;
+    private String alias;
 
     private String password;
 
@@ -83,10 +83,6 @@ public class User implements UserDetails, Principal {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public String getUserName() {
-        return username;
     }
 
     @Override

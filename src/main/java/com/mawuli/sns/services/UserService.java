@@ -13,8 +13,6 @@ import com.mawuli.sns.security.services.JwtService;
 import com.mawuli.sns.utility.cloudinary.CloudinaryService;
 import com.mawuli.sns.utility.fileUpload.FileStorageService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,8 +55,8 @@ public class UserService {
             return null;
         }
 
-        if(!user.getUserName().equals(existingUser.getUserName())) {
-            if(userRepository.findByUsername(user.getUserName()).isPresent()) {
+        if(!user.getAlias().equals(existingUser.getAlias())) {
+            if(userRepository.findByAlias(user.getAlias()).isPresent()) {
                 throw new UsernameAlreadyExistException(
                         BAD_REQUEST,
                         "Username already exists"
@@ -75,15 +73,15 @@ public class UserService {
         if (existingUser == null) {
             throw new EntityNotFoundException("User not found");
         }
-        if (user.getUserName() != null) {
-            if(!user.getUserName().equals(existingUser.getUserName())) {
-                Optional<User> userWithNewUsername = userRepository.findByUsername(user.getUserName());
+        if (user.getAlias() != null) {
+            if(!user.getAlias().equals(existingUser.getAlias())) {
+                Optional<User> userWithNewUsername = userRepository.findByAlias(user.getAlias());
                 if(userWithNewUsername.isPresent()) {
                     throw new UsernameAlreadyExistException(
                             HttpStatus.BAD_REQUEST, "Username already exists");
                 }
             }
-            existingUser.setUsername(user.getUserName());
+            existingUser.setAlias(user.getAlias());
         }
         if (user.getFirstname() != null) {
             existingUser.setFirstname(user.getFirstname());

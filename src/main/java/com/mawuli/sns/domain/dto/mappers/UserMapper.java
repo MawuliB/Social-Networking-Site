@@ -14,21 +14,21 @@ public class UserMapper {
         var id = user.getId();
         var firstname = user.getFirstname();
         var lastname = user.getLastname();
-        var username = user.getUserName();
+        var alias = user.getAlias();
         var email = user.getEmail();
         var profilePictureUrl = user.getProfileImageUrl();
         var profilePictureId = user.getProfileImageId();
         var status = user.getStatus();
         var newMessageCount = user.getNewMessageCount();
 
-        return new UserDto(id, firstname, lastname, username, email, profilePictureUrl, profilePictureId, status, newMessageCount);
+        return new UserDto(id, firstname, lastname, alias, email, profilePictureUrl, profilePictureId, status, newMessageCount);
     }
 
     public static User mapToUser(UserDto userDto) {
         var user = new User();
         user.setFirstname(userDto.firstname());
         user.setLastname(userDto.lastname());
-        user.setUsername(userDto.username());
+        user.setAlias(userDto.alias());
         user.setEmail(userDto.email());
         user.setProfileImageUrl(userDto.profileImageUrl());
         user.setProfileImageId(userDto.profileImageId());

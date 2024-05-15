@@ -21,7 +21,7 @@ type User {
     firstname: String
     lastname: String
     email: String
-    username: String
+    alias: String
     profileImageId: String
     profileImageUrl: String
     enabled: Boolean
@@ -40,7 +40,7 @@ input ContactRequest {
 input UserUpdateRequest {
     firstname: String
     lastname: String
-    username: String
+    alias: String
 }
 
 type Contact {

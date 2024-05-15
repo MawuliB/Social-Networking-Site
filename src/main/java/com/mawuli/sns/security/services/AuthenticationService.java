@@ -74,7 +74,7 @@ public class AuthenticationService {
         }
 
         //check if username exists
-        if(userRepository.findByUsername(request.getUsername()).isPresent()) {
+        if(userRepository.findByAlias(request.getUsername()).isPresent()) {
             throw new ResponseStatusException(
                     BAD_REQUEST,
                     "Username already exists"
@@ -93,7 +93,7 @@ public class AuthenticationService {
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .username(request.getUsername())
+                .alias(request.getUsername())
                 .loginType("normal")
                 .status(Status.OFFLINE)
                 .newMessageCount(0)
@@ -253,7 +253,7 @@ public class AuthenticationService {
                 .firstname(firstName)
                 .lastname(lastName)
                 .email(email)
-                .username(firstName)
+                .alias(firstName)
                 .loginType("oauth")
                 .accountLocked(false)
                 .enabled(true)

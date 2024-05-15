@@ -6,21 +6,15 @@ import com.mawuli.sns.domain.entities.Contact;
 import com.mawuli.sns.repositories.ContactRepository;
 import com.mawuli.sns.repositories.UserAccessRepository;
 import com.mawuli.sns.security.domain.entities.User;
-import com.mawuli.sns.security.repositories.UserRepository;
 import com.mawuli.sns.security.services.JwtService;
 import com.mawuli.sns.services.UserService;
-import com.mawuli.sns.utility.cloudinary.CloudinaryService;
-import com.mawuli.sns.utility.fileUpload.FileStorageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,21 +63,21 @@ public class UserServiceTest {
 
         User user = new User();
         user.setId(userId);
-        user.setUsername("newUsername");
+        user.setAlias("newUsername");
 
         User existingUser = new User();
         existingUser.setId(userId);
-        existingUser.setUsername("oldUsername");
+        existingUser.setAlias("oldUsername");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(userRepository.findByUsername(user.getUserName())).thenReturn(Optional.empty());
+        when(userRepository.findByAlias(user.getAlias())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
 
         UserDto result = userService.updateUser(user, userId);
 
         assertEquals(UserMapper.mapToUserDto(user), result);
         verify(userRepository, times(1)).findById(userId);
-        verify(userRepository, times(1)).findByUsername(user.getUserName());
+        verify(userRepository, times(1)).findByAlias(user.getAlias());
         verify(userRepository, times(1)).save(user);
     }
 
@@ -93,21 +87,21 @@ public class UserServiceTest {
 
         User user = new User();
         user.setId(userId);
-        user.setUsername("newUsername");
+        user.setAlias("newUsername");
 
         User existingUser = new User();
         existingUser.setId(userId);
-        existingUser.setUsername("oldUsername");
+        existingUser.setAlias("oldUsername");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-        when(userRepository.findByUsername(user.getUserName())).thenReturn(Optional.empty());
+        when(userRepository.findByAlias(user.getAlias())).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         UserDto result = userService.partialUpdateUser(user, userId);
 
         assertEquals(UserMapper.mapToUserDto(user), result);
         verify(userRepository, times(1)).findById(userId);
-        verify(userRepository, times(1)).findByUsername(user.getUserName());
+        verify(userRepository, times(1)).findByAlias(user.getAlias());
         verify(userRepository, times(1)).save(any(User.class));
     }
 
