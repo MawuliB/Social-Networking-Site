@@ -1,6 +1,7 @@
 package com.mawuli.sns;
 
 import com.mawuli.sns.security.domain.entities.Role;
+import com.mawuli.sns.services.KeepAlive;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ public class SnsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SnsApplication.class, args);
+		KeepAlive.main(args);
 	}
 		@Bean
 		public CommandLineRunner runner (RoleRepository roleRepository){
