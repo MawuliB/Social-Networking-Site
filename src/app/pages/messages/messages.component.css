@@ -24,67 +24,6 @@ body {
     border-radius: 8px;
 }
 
-.users-list {
-    flex: 1;
-    border-right: 1px solid #ccc;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #3498db;
-    color: #fff;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.users-list-container {
-    height: 100%;
-    overflow-y: scroll;
-}
-
-.users-list h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.users-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    cursor: pointer;
-}
-
-.user-item.active {
-    background-color: #cdebff;
-    color: #4f4f4f;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.user-item img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.user-item span {
-    font-weight: bold;
-}
-
-.separator {
-    height: 1px;
-    background-color: #ccc;
-    margin: 10px 0;
-}
-
 .chat-area {
     flex: 3;
     display: flex;
@@ -98,6 +37,7 @@ body {
 .message {
     margin-bottom: 5px;
     border-radius: 5px;
+    animation: slideUp 0.5s ease-out;
 }
 
 #chat-messages {
@@ -106,11 +46,22 @@ body {
     overflow-y: scroll;
 }
 
-.message p {
+@keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .message p  {
     padding: 0 12px;
     border-radius: 15px;
     word-wrap: break-word;
-}
+  }
 
 .user-item span.nbr-msg {
     margin-left: 10px;
@@ -146,7 +97,7 @@ body {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-right: 10px;
+    margin-right: 1px;
 }
 
 .message-input button {
@@ -158,49 +109,9 @@ body {
     cursor: pointer;
 }
 
-.user-form {
-    max-width: 400px;
-    padding: 40px;
-    box-sizing: border-box;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.user-form h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.user-form label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.user-form input {
+.responsive-img, .responsive-video {
+    max-width: 300px;
+    max-height: 300px;
     width: 100%;
-    padding: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.user-form button {
-    padding: 12px;
-    border: none;
-    background-color: #3498db;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-}
-
-.hidden {
-    display: none;
-}
-
-a.logout {
-    color: #fff;
-    text-decoration: none;
+    height: auto;
 }
