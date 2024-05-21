@@ -1,5 +1,6 @@
 package com.mawuli.sns.chat.controllers;
 
+import com.mawuli.sns.chat.domain.dto.request.ChatMessageRequest;
 import com.mawuli.sns.chat.domain.entity.ChatMessage;
 import com.mawuli.sns.chat.domain.entity.ChatNotification;
 import com.mawuli.sns.chat.services.ChatMessageService;
@@ -10,6 +11,7 @@ import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,7 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void processMessage(
-            @Payload ChatMessage chatMessage) {
+            @Payload ChatMessageRequest chatMessage) {
         try{
         ChatMessage savedMessage = chatMessageService.save(chatMessage);
         messagingTemplate.convertAndSendToUser(
@@ -39,7 +41,8 @@ public class ChatController {
                         savedMessage.getId(),
                         savedMessage.getSenderId(),
                         savedMessage.getRecipientId(),
-                        savedMessage.getContent()
+                        savedMessage.getContent(),
+                        savedMessage.getFileType()
                 )
         );
         } catch (ResponseStatusException e) {
@@ -61,7 +64,7 @@ public class ChatController {
     }
 
     @MessageExceptionHandler
-    @SendToUser("/queue/errors")
+    @SendTo("/queue/errors")
     public ResponseEntity<?> handleException(MessageDeliveryException exception) {
         // Return a message to the user
         return ResponseEntity.badRequest().body(exception.getMessage());

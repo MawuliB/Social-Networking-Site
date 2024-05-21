@@ -45,14 +45,20 @@ public class CloudinaryService {
 
 
     public Map upload(MultipartFile multipartFile) throws IOException {
-        File file = convert(multipartFile);
         if(cloudinary == null) {
             throw new IOException("Cloudinary is not initialized");
         }
-        Map result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
-        if (!Files.deleteIfExists(file.toPath())) {
-            throw new IOException("Failed to delete temporary file: " + file.getAbsolutePath());
+        Map params = ObjectUtils.asMap("resource_type", "auto");
+        Map result = cloudinary.uploader().upload(multipartFile.getBytes(), params);
+        return result;
+    }
+
+    public Map videoUpload(MultipartFile multipartFile) throws IOException {
+        if(cloudinary == null) {
+            throw new IOException("Cloudinary is not initialized");
         }
+        Map params = ObjectUtils.asMap("resource_type", "video");
+        Map result = cloudinary.uploader().upload(multipartFile.getBytes(), params);
         return result;
     }
 

@@ -85,7 +85,8 @@ public class SecurityConfig {
                                 "/users",
                                 "/frontend",
                                 "/frontend/**",
-                                "/messages/**"
+                                "/messages/**",
+                                "/ping"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
