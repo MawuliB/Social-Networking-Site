@@ -8,9 +8,6 @@ import { MessagesComponent } from '../messages/messages.component';
 import { InvitesComponent } from '../invites/invites.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { CommonModule } from '@angular/common';
-import { Apollo } from 'apollo-angular';
-import { GET_ALL_CONTACTS } from '../../services/graphql.operations';
-import { ContactService } from '../../services/contact.service';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
 import { MyStompService } from '../../my-stomp.service';
@@ -97,6 +94,7 @@ export class HomeComponent implements OnInit {
         {},
         this.user.id
     );
+    localStorage.removeItem("activeComponent");
     window.location.href = '/login';
   }
 }

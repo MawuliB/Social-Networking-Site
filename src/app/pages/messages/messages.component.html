@@ -5,160 +5,357 @@
 >
   <div class="flex items-center mb-4">
     <div *ngIf="selectedUser">
-        <button
-            class="text-blue-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            (click)="backToContacts()"
-        >
-            <i class="fas fa-arrow-left"></i>
-        </button>
+      <button
+        class="text-blue-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-16 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+        (click)="backToContacts()"
+      >
+        <i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+    <div class="relative mx-5" *ngIf="selectedUser && selectedUser.status == 'ONLINE'">
+      <img
+        class="w-10 h-10 rounded-full"
+        src="{{ selectedUser.profileImageUrl }}"
+        alt="(((+)))"
+      />
+      <span
+        class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"
+      ></span>
+    </div>
+    <div class="relative mx-5" *ngIf="selectedUser && selectedUser.status == 'OFFLINE'">
+      <img
+        class="w-10 h-10 rounded-full"
+        src="{{ selectedUser.profileImageUrl }}"
+        alt="(((-)))"
+      />
+      <span
+        class="top-0 left-7 absolute w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"
+      ></span>
     </div>
     <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-        {{selectedUser ? selectedUser.firstname + ' ' + selectedUser.lastname : 'My Chat'}}
+      {{
+        selectedUser
+          ? selectedUser.alias
+          : "My Chat"
+      }}
     </h5>
   </div>
   <div *ngIf="!selectedUser && !loadingForUsers">
-  <div class="flow-root">
-    <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-4">
-      <ng-container *ngFor="let contact of connectedUsers">
-        <li 
-        class="py-3 sm:py-4 cursor-pointer" 
-        *ngIf="!contact.isBlacklisted" 
-        (click)="userItemClick(contact)"
-        (keydown)="onKeyDown($event)"
-        (keyup)="onKeyUp($event)"
-        (keypress)="onKeyPress($event)"
-        >
-          <div class="flex items-center">
-            <div class="relative" *ngIf="contact.status=='ONLINE'">
-                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="(((+)))">
-                <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
-            </div>
-            <div class="relative" *ngIf="contact.status=='OFFLINE'">
-                <img class="w-10 h-10 rounded-full" src="{{contact.profileImageUrl}}" alt="(((-)))">
-                <span class="top-0 left-7 absolute  w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
-            </div>
-            <div class="flex-1 min-w-0 ms-4">
-              <p
-                class="text-sm font-medium text-gray-900 truncate dark:text-white"
+    <div class="flow-root">
+      <ul class="divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+        <ng-container *ngFor="let contact of connectedUsers">
+          <li
+            class="py-3 sm:py-4 cursor-pointer"
+            *ngIf="!contact.isBlacklisted"
+            (click)="userItemClick(contact)"
+            (keydown)="onKeyDown($event)"
+            (keyup)="onKeyUp($event)"
+            (keypress)="onKeyPress($event)"
+          >
+            <div class="flex items-center">
+              <div class="relative" *ngIf="contact.status == 'ONLINE'">
+                <img
+                  class="w-10 h-10 rounded-full"
+                  src="{{ contact.profileImageUrl }}"
+                  alt="(((+)))"
+                />
+                <span
+                  class="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"
+                ></span>
+              </div>
+              <div class="relative" *ngIf="contact.status == 'OFFLINE'">
+                <img
+                  class="w-10 h-10 rounded-full"
+                  src="{{ contact.profileImageUrl }}"
+                  alt="(((-)))"
+                />
+                <span
+                  class="top-0 left-7 absolute w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"
+                ></span>
+              </div>
+              <div class="flex-1 min-w-0 ms-4">
+                <p
+                  class="text-sm font-medium text-gray-900 truncate dark:text-white"
+                >
+                  {{contact.alias}}
+                </p>
+                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                  {{ contact.firstname }} {{ contact.lastname }}
+                </p>
+              </div>
+              <div
+                class="ml-5"
+                [ngClass]="{
+                  'inline-flex items-center justify-center w-4 h-4 p-4 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300':
+                    contact.newMessageCount > 0
+                }"
               >
-                {{ contact.firstname }} {{ contact.lastname }}
-              </p>
-              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                {{ contact.email }}
-              </p>
+                {{ contact.newMessageCount > 0 ? contact.newMessageCount : "" }}
+              </div>
+              <div
+                class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+              ></div>
+              <div
+                class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+              ></div>
             </div>
-            <div class="ml-5"
-            [ngClass]="{'inline-flex items-center justify-center w-4 h-4 p-4 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300': contact.newMessageCount > 0}"
-            >{{ contact.newMessageCount > 0 ? contact.newMessageCount : "" }}</div>
-            <div
-              class="ml-10 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-            >
-            </div>
-            <div
-              class="ml-8 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-            >
-            </div>
-          </div>
-        </li>
-      </ng-container>
-    </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div
+    *ngIf="loading"
+    class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+  >
+    <div class="flex items-center justify-between">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div
+    *ngIf="loadingForUsers && !loading"
+    class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+  >
+    <div class="flex items-center justify-between">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <div class="flex items-center justify-between pt-4">
+      <div>
+        <div
+          class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"
+        ></div>
+        <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+      </div>
+      <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+    </div>
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  <div *ngIf="selectedUser && !loading" class="chat-area relative h-[75vh]">
+    <div #chatArea id="chat-messages" class="mb-14">
+      <div
+        *ngFor="let message of messages"
+        class="message"
+        [ngClass]="{
+          sender: message.senderId.toString() === id.toString(),
+          receiver: message.senderId.toString() !== id.toString()
+        }"
+      >
+        <ng-container *ngIf="message.fileType === 'TEXT'; else notText">
+          <p>{{ message.content }}</p>
+        </ng-container>
+
+        <ng-template #notText>
+          <img
+            *ngIf="message.fileType === 'IMAGE'"
+            [src]="message.content"
+            alt="I"
+            class="responsive-img"
+          />
+          <video
+            *ngIf="message.fileType === 'VIDEO'"
+            [src]="message.content"
+            controls
+            class="responsive-video"
+          ></video>
+        </ng-template>
+      </div>
+    </div>
+    <div class="message-input absolute inset-x-0 bottom-0 flex mt-8">
+      <input #messageInput type="text" />
+      <button (click)="sendMessage($event)">Send</button>
+      <button
+        (click)="openModal()"
+        class="ml-2 block mt-5 mx-auto text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button"
+      >
+        <i class="fa fa-upload"></i>
+      </button>
+    </div>
   </div>
 </div>
 
-<!-- Loading Skeleton -->
-<div *ngIf="loading" class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <span class="sr-only">Loading...</span>
-</div>
-
-<!-- Loading Skeleton -->
-<div *ngIf="loadingForUsers && !loading" class="max-w-md p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <div class="flex items-center justify-between pt-4">
-        <div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-            <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-        </div>
-        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-    </div>
-    <span class="sr-only">Loading...</span>
-</div>
-
-<div *ngIf="selectedUser && !loading" class="chat-area h-screen">
-    <div #chatArea id="chat-messages">
-      <div *ngFor="let message of messages"
-           class="message"
-           [ngClass]="{ 'sender': message.senderId.toString() === id.toString(), 'receiver': message.senderId.toString() !== id.toString()}"
-           >
-        <p>{{ message.content }}</p>
+<!-- File Upload Modal -->
+<div
+  *ngIf="isModalOpen"
+  tabindex="-1"
+  aria-hidden="true"
+  class="flex items-center justify-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 h-[calc(100%-1rem)] max-h-full"
+>
+  <div class="relative p-4 w-full max-w-md max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+      >
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Upload Image Or Video
+        </h3>
+        <button
+          type="button"
+          id="close-modal"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          (click)="closeModal()"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
       </div>
-    </div>
-    <div class="message-input">
-      <input #messageInput type="text">
-      <button (click)="sendMessage($event)">
-        Send
-      </button>
+      <!-- Modal body -->
+
+      <div class="flex items-center justify-center w-full">
+        <label
+          id="upload"
+          for="dropzone-file"
+          class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg
+              class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span class="font-semibold">Click to upload</span>
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              Videos and Images only (max 20MB)
+            </p>
+          </div>
+          <input
+            id="dropzone-file"
+            type="file"
+            class="hidden"
+            accept="image/*,video/*"
+            (change)="onFileSelected($event)"
+          />
+        </label>
+        <img id="preview" class="hidden" alt="preview" />
+      </div>
+      <div>
+        <button
+          *ngIf="!loadingForFileUpload"
+          (click)="onFileUpload()"
+          class="my-8 ml-2 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Upload
+        </button>
+        <button
+          *ngIf="loadingForFileUpload"
+          class="my-8 ml-2 inline-flex items-center bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          <img
+            class="w-6 h-6"
+            src="assets/images/loading.gif"
+            alt="Loading..."
+          />
+        </button>
+      </div>
     </div>
   </div>
 </div>
