@@ -21,7 +21,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "idx_users_email", columnList = "email"),
+        @Index(name = "idx_users_firstname_lastname", columnList = "firstname, lastname"),
+        @Index(name = "idx_users_alias", columnList = "alias"),
+        @Index(name = "idx_users_status", columnList = "status")
+})
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
     @Id

@@ -20,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ContactService {
 
-    private static final Logger log = LoggerFactory.getLogger(ContactService.class);
     private final ContactRepository contactRepository;
     private final UserAccessRepository userAccessRepository;
     private final ContactMapper contactMapper;

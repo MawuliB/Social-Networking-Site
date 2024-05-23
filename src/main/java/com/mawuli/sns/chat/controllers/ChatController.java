@@ -34,6 +34,21 @@ public class ChatController {
             @Payload ChatMessageRequest chatMessage) {
         try{
         ChatMessage savedMessage = chatMessageService.save(chatMessage);
+        if("You cannot send messages to this user, You have been blocked or not accepted as a friend".equals(savedMessage.getContent()))
+        {
+            messagingTemplate.convertAndSendToUser(
+                    chatMessage.getSenderId(),
+                    "/queue/messages",
+                    new ChatNotification(
+                            savedMessage.getId(),
+                            savedMessage.getSenderId(),
+                            savedMessage.getRecipientId(),
+                            savedMessage.getContent(),
+                            savedMessage.getFileType(),
+                            "error"
+                    )
+            );
+        }else{
         messagingTemplate.convertAndSendToUser(
                 chatMessage.getRecipientId(),
                 "/queue/messages",
@@ -42,9 +57,11 @@ public class ChatController {
                         savedMessage.getSenderId(),
                         savedMessage.getRecipientId(),
                         savedMessage.getContent(),
-                        savedMessage.getFileType()
+                        savedMessage.getFileType(),
+                        "message"
                 )
         );
+        }
         } catch (ResponseStatusException e) {
             // Send the error message to the "/queue/errors" destination
             messagingTemplate.convertAndSendToUser(

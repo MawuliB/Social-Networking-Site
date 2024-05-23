@@ -215,12 +215,12 @@ public class UserServiceTest {
         List<Contact> contacts = Arrays.asList(contact1, contact2);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(contactRepository.findAllByUser(user)).thenReturn(contacts);
+        when(contactRepository.findAllByUserAndIsAcceptedTrueAndIsBlacklistedFalse(user)).thenReturn(contacts);
 
         List<UserDto> result = userService.findConnectedUsers(userId);
 
         assertEquals(contacts.size(), result.size());
         verify(userRepository, times(1)).findById(userId);
-        verify(contactRepository, times(1)).findAllByUser(user);
+        verify(contactRepository, times(1)).findAllByUserAndIsAcceptedTrueAndIsBlacklistedFalse(user);
     }
 }

@@ -60,9 +60,13 @@ public class ChatMessageService {
         // Check if the recipient has blocked the sender or if the sender has been accepted by the recipient and vice versa
         if (Boolean.TRUE.equals(contact.getIsBlacklisted()) || Boolean.FALSE.equals(contact.getIsAccepted()) ||
                 Boolean.TRUE.equals(reverseContact.getIsBlacklisted()) || Boolean.FALSE.equals(reverseContact.getIsAccepted())){
-            throw new ResponseStatusException(
-                    BAD_REQUEST,
-                    "Message cannot be sent");
+            return ChatMessageMapper.mapToChatMessage(ChatMessageRequest.builder()
+                    .senderId(chatMessage.getSenderId())
+                    .recipientId(chatMessage.getRecipientId())
+                    .content("You cannot send messages to this user, You have been blocked or not accepted as a friend")
+                    .timestamp(new Date())
+                    .fileType("TEXT")
+                    .build());
         }
 
         // Get the chatId

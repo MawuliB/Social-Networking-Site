@@ -112,13 +112,13 @@ public class ContactServiceTest {
         List<Contact> contacts = Arrays.asList(contact1, contact2);
 
         when(userAccessRepository.findById(userId)).thenReturn(Optional.of(user));
-        when(contactRepository.findAllByUser(user)).thenReturn(contacts);
+        when(contactRepository.findAllByUserAndIsAcceptedTrueAndIsBlacklistedFalse(user)).thenReturn(contacts);
 
         List<Contact> result = contactService.getAllContactByContactId(userId);
 
         assertEquals(2, result.size());
         verify(userAccessRepository, times(1)).findById(userId);
-        verify(contactRepository, times(1)).findAllByUser(user);
+        verify(contactRepository, times(1)).findAllByUserAndIsAcceptedTrueAndIsBlacklistedFalse(user);
     }
 
     @Test

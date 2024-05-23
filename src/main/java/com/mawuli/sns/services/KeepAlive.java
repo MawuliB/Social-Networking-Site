@@ -28,7 +28,7 @@ public class KeepAlive {
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
-                log.error("Keep-alive request sent successfully");
+                log.info("Keep-alive request sent successfully");
             } else {
                 log.error("Failed to send keep-alive request. Response code: {}", responseCode);
             }

@@ -13,4 +13,5 @@ public class ChatNotification {
     private String recipientId;
     private String content;
     private FileType fileType;
+    private String typeOfNotification;
 }
