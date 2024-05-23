@@ -60,9 +60,6 @@ export class MessagesComponent implements OnInit {
   }
 
   onConnected() {
-    console.log('Connected to WebSocket In Messages Component');
-
-    console.log(this.id);
     // Subscriptions
     this.stompService.stompClient.subscribe(
       `/user/${this.id}/queue/messages`,
@@ -94,10 +91,14 @@ export class MessagesComponent implements OnInit {
             (connectedUser) => connectedUser.id === user.id
           );
   
-          return existingUser
-            ? { ...user, newMessageCount: existingUser.newMessageCount || 0 }
-            : { ...user, newMessageCount: 0 };
-        });
+          // Retrieve the new message count from LocalStorage
+        const newMessageCount = localStorage.getItem(this.id + "_" + user.id);
+        const newMessageCountNumber = newMessageCount ? Number(newMessageCount) : 0;
+
+        return existingUser
+          ? { ...user, newMessageCount: existingUser.newMessageCount || newMessageCountNumber }
+          : { ...user, newMessageCount: newMessageCountNumber };
+      });
 
       // update status of selected user
       if (this.selectedUser) {
@@ -189,7 +190,6 @@ export class MessagesComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
   
-      if(this.selectedFile!.size < 20971520) {
       // Create a FileReader to read the contents of the selected file
       const reader = new FileReader();
   
@@ -197,16 +197,26 @@ export class MessagesComponent implements OnInit {
       reader.onload = (e: any) => {
         const preview = document.getElementById('preview') as HTMLImageElement;
         const upload = document.getElementById('upload') as HTMLElement;
+        
         if (this.selectedFile!.type.startsWith('image/')) {
+          if (this.selectedFile!.size > 10485760) {
+            this.toastComponent.openToast('Image size should not exceed 10MB');
+            return;
+          }
           preview.src = e.target.result;
           preview.classList.remove('hidden');
         } else if (this.selectedFile!.type.startsWith('video/')) {
+          if (this.selectedFile!.size > 20971520) {
+            this.toastComponent.openToast('Video size should not exceed 20MB');
+            return;
+          }
           const video = document.createElement('video');
           video.src = e.target.result;
           video.controls = true;
           preview.replaceWith(video);
         } else {
           this.toastComponent.openToast('Invalid file type. Please select an image or video file');
+          return;
         }
         upload.classList.add('hidden');
       };
@@ -215,10 +225,7 @@ export class MessagesComponent implements OnInit {
       if (this.selectedFile) {
         reader.readAsDataURL(this.selectedFile);
       }
-    }else {
-      this.toastComponent.openToast('File size should not exceed 20MB');
     }
-  }
   }
 
   onFileUpload() {
@@ -298,11 +305,11 @@ export class MessagesComponent implements OnInit {
   // Handle the user item click event
   async userItemClick(user: any) {
     this.selectedUser = user;
-    console.log(this.selectedUser);
 
     // Reset the newMessageCount for the selected user
     if (this.selectedUser.newMessageCount) {
       this.selectedUser.newMessageCount = 0;
+      localStorage.setItem(this.id + "_" + this.selectedUser.id, this.selectedUser.newMessageCount.toString());
     }
     await this.fetchAndDisplayUserChat();
     this.scrollChatToBottom();
@@ -313,7 +320,6 @@ export class MessagesComponent implements OnInit {
     // Reset the newMessageCount for the selected user
     if (this.selectedUser && this.selectedUser.newMessageCount) {
       this.selectedUser.newMessageCount = 0;
-      console.log(this.selectedUser);
     }
 
     if (
@@ -328,6 +334,7 @@ export class MessagesComponent implements OnInit {
       );
       if (user) {
         user.newMessageCount = 0;
+        localStorage.setItem(this.id + "_" + user.id, user.newMessageCount.toString());
       }
     }
 
@@ -342,11 +349,16 @@ export class MessagesComponent implements OnInit {
     const message = JSON.parse(payload.body);
     if (
       this.selectedUser && this.selectedUser.id && message && message.senderId &&
-      this.selectedUser.id.toString() === message.senderId.toString()
+      this.selectedUser.id.toString() === message.senderId.toString() && message.typeOfNotification && message.typeOfNotification == 'message'
     ) { // Check if the message is for the selected user and display it
       this.displayMessage(message.senderId, message.content, message.fileType);
       this.chatArea.nativeElement.scrollTop =
         this.chatArea.nativeElement.scrollHeight;
+    } else if(
+      this.selectedUser && this.selectedUser.id && message && message.senderId &&
+      this.selectedUser.id.toString() === message.recipientId.toString() && message.typeOfNotification && message.typeOfNotification == 'error'
+    ) {
+      this.toastComponent.openToast(message.content);
     }
 
     if (
@@ -362,6 +374,7 @@ export class MessagesComponent implements OnInit {
       );
       if (user) {
         user.newMessageCount++;
+        localStorage.setItem(this.id + "_" + user.id, user.newMessageCount.toString());
       }
     }
 

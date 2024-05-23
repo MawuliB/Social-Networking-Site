@@ -242,7 +242,7 @@
       </div>
     </div>
     <div class="message-input absolute inset-x-0 bottom-0 flex mt-8">
-      <input #messageInput type="text" />
+      <input #messageInput type="text" (keyup.enter)="sendMessage($event)" />
       <button (click)="sendMessage($event)">Send</button>
       <button
         (click)="openModal()"
@@ -324,7 +324,7 @@
               <span class="font-semibold">Click to upload</span>
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              Videos and Images only (max 20MB)
+              Videos (max 20MB) and Images only (max 10MB)
             </p>
           </div>
           <input
