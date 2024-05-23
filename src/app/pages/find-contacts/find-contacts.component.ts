@@ -1,4 +1,4 @@
-import { Component, OnInit, PipeTransform, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ToastGComponent } from '../toast-g/toast-g.component';
 import { ToastComponent } from '../toast/toast.component';
 import { SharedModule } from '../../services/shared.module';
@@ -18,11 +18,13 @@ export class FindContactsComponent implements OnInit {
   @ViewChild(ToastComponent) toastComponent!: ToastComponent;
   @ViewChild(ToastGComponent) toastGComponent!: ToastGComponent;
 
-  user = JSON.parse(localStorage.getItem('user') || '{}');
+  user = JSON.parse(localStorage.getItem('user') ?? '{}');
   contacts: any[] = [];
   errors: any;
   searchTerm = '';
   loading = false
+
+  id = this.user.id;
 
   constructor(private contactService: ContactService) {}
 
@@ -47,7 +49,7 @@ export class FindContactsComponent implements OnInit {
     this.loading = true;
     this.contactService.getAllContacts().subscribe({
       next: (contacts: User[]) => {
-        this.contacts = contacts;
+        this.contacts = contacts.filter((contact) => contact.id !== this.user.id);
         this.loading = false;
       },
       error: (error: any) => {
