@@ -38,3 +38,6 @@ build/
 
 # uploads folder
 uploads/
+
+# db migrations
+db/migration/*.sql
