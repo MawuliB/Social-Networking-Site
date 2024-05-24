@@ -34,10 +34,14 @@ build/
 
 
 # properties files
-*.properties
+application.properties
+application-prod.properties
+
+# environment file
+.env
 
 # uploads folder
 uploads/
 
 # db migrations
-db/migration/*.sql
+*.sql
