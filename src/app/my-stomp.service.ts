@@ -5,7 +5,7 @@ import { environment } from '../environments/environment';
 import { ReplaySubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MyStompService {
   private url = environment.API_URL;
@@ -31,18 +31,30 @@ export class MyStompService {
 
   private onConnected() {
     console.log('Connected to WebSocket');
-    
+
+    // Reset retry count upon successful connection
+    this.retryCount = 0;
+
     this.connectedSource.next();
 
-    this.stompClient.ws.onclose = this.onWebSocketClose.bind(this);  // Handle WebSocket close
+    this.stompClient.ws.onclose = this.onWebSocketClose.bind(this); // Handle WebSocket close
   }
+
+  private retryCount = 0;
+  private maxRetries = 60;
 
   private onError(error: any) {
     console.error('WebSocket connection error:', error);
-    // Attempt to reconnect after 1 minute
-    setTimeout(() => {
-      this.initializeWebSocketConnection();
-    }, 1000);
+
+    // Attempt to reconnect after 1 second if retry count is less than max retries
+    if (this.retryCount < this.maxRetries) {
+      this.retryCount++;
+      setTimeout(() => {
+        this.initializeWebSocketConnection();
+      }, 1000);
+    } else {
+      console.error('Max retries reached. Stopping reconnection attempts.');
+    }
   }
 
   private onWebSocketClose() {
