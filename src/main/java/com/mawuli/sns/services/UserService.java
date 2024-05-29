@@ -194,7 +194,7 @@ public class UserService {
 
     //return contact column from a list of contacts
     public List<UserDto> findConnectedUsers(Long id) {
-        var contacts = contactRepository.findAllByUserIdAndIsAcceptedTrueAndIsBlacklistedFalse(id);
+        var contacts = contactRepository.findAllByUserAndIsAcceptedTrueAndIsBlacklistedFalse(userRepository.findById(id).orElse(null));
         List<UserDto> connectedUsers = new ArrayList<>();
         for (var contact : contacts) {
                 connectedUsers.add(UserMapper.mapToUserDto(contact.getContact()));

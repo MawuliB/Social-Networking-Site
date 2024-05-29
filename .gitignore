@@ -34,7 +34,8 @@ build/
 
 
 # properties files
-*.properties
+application.properties
+application-prod.properties
 
 # environment file
 .env
@@ -44,6 +45,3 @@ uploads/
 
 # db migrations
 *.sql
-
-# keyStore file
-Keystore.p12

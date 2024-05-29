@@ -44,11 +44,15 @@ public class ChatMessageService {
                         "User not found"));
 
         // Fetch the Contact record for the sender and recipient
-        Contact contact = contactRepository.findByUserIdAndContactId(Long.parseLong(chatMessage.getSenderId()), Long.parseLong(chatMessage.getRecipientId()))
-                .orElseThrow(() -> new ResponseStatusException(
-                        BAD_REQUEST,
-                        "Contact not found"));
-        Contact reverseContact = contactRepository.findByUserIdAndContactId(Long.parseLong(chatMessage.getRecipientId()), Long.parseLong(chatMessage.getSenderId())
+        Contact contact = contactRepository.findByUserAndContact(
+                userRepository.findById(Long.valueOf(chatMessage.getSenderId())).get(),
+                userRepository.findById(Long.valueOf(chatMessage.getRecipientId())).get()
+        ).orElseThrow(() -> new ResponseStatusException(
+                BAD_REQUEST,
+                "Contact not found"));
+        Contact reverseContact = contactRepository.findByUserAndContact(
+                userRepository.findById(Long.valueOf(chatMessage.getRecipientId())).get(),
+                userRepository.findById(Long.valueOf(chatMessage.getSenderId())).get()
         ).orElseThrow(() -> new ResponseStatusException(
                 BAD_REQUEST,
                 "Contact not found"));

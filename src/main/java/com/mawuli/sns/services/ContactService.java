@@ -87,7 +87,9 @@ public class ContactService {
     }
 
     public List<Contact> getAllContactByContactId(Long aLong) {
-        return contactRepository.findAllByUserId(aLong);
+        return contactRepository.findAllByUser(userAccessRepository.findById(aLong)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + aLong))
+        );
     }
 
     public Contact addContactToBlackList(Integer contactId) {
@@ -106,6 +108,8 @@ public class ContactService {
     }
 
     public List<Contact> getInvitationsByUserId(Long userId) {
-        return contactRepository.findAllByContactIdAndIsAcceptedFalse(userId);
+        return contactRepository.findAllByContactAndIsAcceptedFalse(userAccessRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId))
+        );
     }
 }
