@@ -25,7 +25,7 @@ export class MessagesComponent implements OnInit {
   @ViewChild('messageInput', { static: false }) messageInput!: ElementRef;
 
   loading = false;
-  loadingForUsers = false
+  loadingForUsers = false;
   loadingForFileUpload = false;
   isModalOpen = false;
 
