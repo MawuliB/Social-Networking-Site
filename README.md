@@ -89,6 +89,26 @@ You can get your Cloudinary credentials from the following link:
 - Cloudinary: [https://console.cloudinary.com](https://console.cloudinary.com)
 
 
+## Screenshots
+
+### Sign In
+<img src="signin.png" width="500" height="300">
+
+### Sign Up
+<img src="signup.png" width="500" height="300">
+
+### Find Contacts
+<img src="findcontacts.png" width="500" height="300">
+
+### My Contacts
+<img src="mycontacts.png" width="500" height="300">
+
+### Chat
+<img src="chat.png" width="500" height="300">
+
+### Settings
+<img src="settings.png" width="500" height="300">
+
 
 ## License
 
