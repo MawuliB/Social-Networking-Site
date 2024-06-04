@@ -21,6 +21,7 @@ export class MyStompService {
   private initializeWebSocketConnection() {
     this.socket = new SockJS(`${this.url}/ws`);
     this.stompClient = Stomp.over(this.socket);
+    this.stompClient.debug = () => {}; // Disable debug messages
 
     this.stompClient.connect(
       {},
@@ -30,8 +31,6 @@ export class MyStompService {
   }
 
   private onConnected() {
-    console.log('Connected to WebSocket');
-
     // Reset retry count upon successful connection
     this.retryCount = 0;
 
