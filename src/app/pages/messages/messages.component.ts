@@ -69,9 +69,6 @@ export class MessagesComponent implements OnInit {
       `/user/public`,
       this.onMessageReceived.bind(this)
     );
-    this.stompService.stompClient.subscribe(
-      `/queue/errors`
-    )
 
     // login user if offline
     this.stompService.stompClient.send(`/app/user.loginUser`, {}, this.id);
@@ -79,7 +76,6 @@ export class MessagesComponent implements OnInit {
 
   findAndDisplayConnectedUsers(shouldLoad: boolean) {
     this.loadingForUsers = shouldLoad;
-    console.log(this.stompService.stompClient.connected);
     this.userService.getConnectedUsers(this.id).subscribe({
       next: (response: any[]) => {
         const updatedUsers = response.filter((user) => {
