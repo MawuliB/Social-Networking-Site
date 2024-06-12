@@ -43,7 +43,6 @@ export class MyStompService {
   private maxRetries = 60;
 
   private onError(error: any) {
-    console.error('WebSocket connection error:', error);
 
     // Attempt to reconnect after 1 second if retry count is less than max retries
     if (this.retryCount < this.maxRetries) {

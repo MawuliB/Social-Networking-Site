@@ -1,9 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule} from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MyStompService } from '../../my-stomp.service';
-import { Frame } from 'stompjs';
 import { UserService } from '../../services/user.service';
 import { SharedModule } from '../../services/shared.module';
 import { ToastComponent } from '../toast/toast.component';
@@ -119,9 +118,11 @@ export class MessagesComponent implements OnInit {
   async fetchAndDisplayUserChat() {
     this.loading = true;
     try {
-      const userChatResponse = await this.http
-        .get<any>(`${this.url}/messages/${this.id}/${this.selectedUser.id}`)
-        .toPromise();
+      const headers = new HttpHeaders()
+      .set('Authorization', `Bearer ${this.token}`)
+    const userChatResponse = await this.http
+      .get<any>(`${this.url}/messages/${this.id}/${this.selectedUser.id}`, { headers: headers })
+      .toPromise();
       if (userChatResponse) {
         userChatResponse.forEach(
           (chat: { senderId: string; content: string; fileType: string }) => {
